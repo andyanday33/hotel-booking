@@ -12,18 +12,28 @@ const prisma = new PrismaClient();
 
 type AllRoomsData = {
   success: boolean;
-  rooms: Room[];
+  count?: number;
+  rooms?: Room[];
+  error?: unknown;
 };
 
 const allRooms = async (
   req: NextApiRequest,
   res: NextApiResponse<AllRoomsData>
 ) => {
-  const rooms = await prisma.room.findMany();
-  res.status(200).json({
-    success: true,
-    rooms,
-  });
+  try {
+    const rooms = await prisma.room.findMany();
+    res.status(200).json({
+      success: true,
+      count: rooms.length,
+      rooms,
+    });
+  } catch (e: unknown) {
+    res.status(400).json({
+      success: false,
+      error: e,
+    });
+  }
 };
 
 const createRoom = async (req: NextApiRequest, res: NextApiResponse) => {
