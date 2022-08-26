@@ -57,7 +57,6 @@ const createRoom = async (req: NextApiRequest, res: NextApiResponse) => {
     const newRoom = await prisma.room.create({
       data: roomBody,
     });
-    console.log("passed room");
 
     res.status(200).json({
       success: true,
