@@ -21,8 +21,8 @@ model User {
 model Room {
   id Int @id @default(autoincrement())
   name String @db.VarChar(100)
-  price Float @default(0.0)
-  description String
+  pricePerNight Float @default(0.0)
+  description String @db.LongText
   address String
   guestCapacity Int
   numOfBeds Int
@@ -36,19 +36,19 @@ model Room {
   images RoomImage[]
   category Category
   reviews Review[]
-  creator User @relation(fields: [creatorId], references: [id])
-  creatorId Int
+  creator User? @relation(fields: [creatorId], references: [id])
+  creatorId Int?
   createdAt DateTime @default(now())
 }
 
 enum Category {
   KING
   SINGLE
-  TWINS 
+  TWINS
 }
 
 model RoomImage {
-  id Int @id @default(autoincrement())
+  publicId String @unique @id
   url String
   room Room @relation(fields: [roomId], references: [id])
   roomId Int
