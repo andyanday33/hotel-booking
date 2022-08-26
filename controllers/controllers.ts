@@ -1,21 +1,28 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Category, Prisma, PrismaClient } from "@prisma/client";
+import {
+  Category,
+  Prisma,
+  PrismaClient,
+  PrismaPromise,
+  Room,
+} from "@prisma/client";
 import Error from "next/error";
 
 const prisma = new PrismaClient();
 
 type AllRoomsData = {
   success: boolean;
-  message: string;
+  rooms: Room[];
 };
 
 const allRooms = async (
   req: NextApiRequest,
   res: NextApiResponse<AllRoomsData>
 ) => {
+  const rooms = await prisma.room.findMany();
   res.status(200).json({
     success: true,
-    message: "All Rooms",
+    rooms,
   });
 };
 
