@@ -3,9 +3,63 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  reviews Review[]
+  rooms Room[]
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(100)
+  price Float @default(0.0)
+  description String
+  address String
+  guestCapacity Int
+  numOfBeds Int
+  internet Boolean @default(false)
+  breakfast Boolean @default(false)
+  airconditioned Boolean @default(false)
+  petsAllowed Boolean @default(false)
+  roomCleaning Boolean @default(false)
+  ratings Float @default(0.0)
+  numOfReviews Int @default(0)
+  images RoomImage[]
+  category Category
+  reviews Review[]
+  creator User @relation(fields: [creatorId], references: [id])
+  creatorId Int
+  createdAt DateTime @default(now())
+}
+
+enum Category {
+  KING
+  SINGLE
+  TWINS 
+}
+
+model RoomImage {
+  id Int @id @default(autoincrement())
+  url String
+  room Room @relation(fields: [roomId], references: [id])
+  roomId Int
+}
+
+model Review {
+  id Int @id @default(autoincrement())
+  rating Float
+  comment String
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  room Room @relation(fields: [roomId], references: [id])
+  roomId Int
 }
