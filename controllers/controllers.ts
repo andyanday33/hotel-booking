@@ -164,4 +164,57 @@ const updateSingleRoom = async (
   }
 };
 
-export { allRooms, createRoom, getSingleRoom, updateSingleRoom };
+// PUT room details /api/rooms/[id]
+const deleteSingleRoom = async (
+  req: NextApiRequest,
+  res: NextApiResponse<SingleRoomData>
+) => {
+  try {
+    if (!req.query.id || isNaN(+req.query.id)) {
+      res.status(400).json({
+        success: false,
+        error: {
+          message: "Incorrect Id Format",
+        },
+      });
+      return;
+    }
+    const id = +req.query.id;
+    const newRoomDetails = req.body;
+    console.log(newRoomDetails);
+    const room = await prisma.room.delete({
+      where: {
+        id,
+      },
+    });
+
+    if (room) {
+      res.status(200).json({
+        success: true,
+        data: room,
+      });
+      return;
+    }
+
+    // Room not found
+    res.status(404).json({
+      success: false,
+      error: {
+        message: "Not Found",
+      },
+    });
+  } catch (e: unknown) {
+    res.status(400).json({
+      success: false,
+      error: e,
+    });
+  }
+};
+
+export {
+  allRooms,
+  createRoom,
+  getSingleRoom,
+  updateSingleRoom,
+  deleteSingleRoom,
+};
