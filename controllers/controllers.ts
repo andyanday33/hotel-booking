@@ -164,4 +164,4 @@ const updateSingleRoom = async (
   }
 };
 
-export { allRooms, createRoom, getSingleRoom };
+export { allRooms, createRoom, getSingleRoom, updateSingleRoom };
