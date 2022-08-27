@@ -1,11 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {
-  Category,
-  Prisma,
-  PrismaClient,
-  PrismaPromise,
-  Room,
-} from "@prisma/client";
+import { Prisma, PrismaClient, Room } from "@prisma/client";
 import Error from "next/error";
 
 const prisma = new PrismaClient();
@@ -17,6 +11,7 @@ type AllRoomsData = {
   error?: unknown;
 };
 
+// GET all rooms /api/rooms
 const allRooms = async (
   req: NextApiRequest,
   res: NextApiResponse<AllRoomsData>
@@ -36,6 +31,7 @@ const allRooms = async (
   }
 };
 
+// POST a new room /api/rooms
 const createRoom = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     // cast the type
@@ -71,4 +67,54 @@ const createRoom = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export { allRooms, createRoom };
+type SingleRoomData = {
+  success: boolean;
+  error?: unknown;
+  data?: Room;
+};
+
+// GET room details /api/rooms/[id]
+const getSingleRoom = async (
+  req: NextApiRequest,
+  res: NextApiResponse<SingleRoomData>
+) => {
+  try {
+    if (!req.query.id) {
+      res.status(400).json({
+        success: false,
+        error: {
+          message: "Id not provided",
+        },
+      });
+      return;
+    }
+    const id = +req.query.id;
+    const room = await prisma.room.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (room) {
+      res.status(200).json({
+        success: true,
+        data: room,
+      });
+      return;
+    }
+
+    // Room not found
+    res.status(404).json({
+      success: false,
+      error: {
+        message: "Not Found",
+      },
+    });
+  } catch (e: unknown) {
+    res.status(400).json({
+      success: false,
+      error: e,
+    });
+  }
+};
+
+export { allRooms, createRoom, getSingleRoom };
