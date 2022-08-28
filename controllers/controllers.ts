@@ -70,92 +70,98 @@ const createRoom: ControllerFunctionType = catchAsyncErrorsMiddleware(
 );
 
 // GET room details /api/rooms/[id]
-const getSingleRoom: ControllerFunctionType = async (req, res, next) => {
-  try {
-    if (!req.query.id || isNaN(+req.query.id)) {
-      return next(new ErrorHandler("Invalid Id Format.", 400));
-    }
-    const id = +req.query.id;
-    const room = await prisma.room.findUnique({
-      where: {
-        id,
-      },
-    });
-    if (room) {
-      res.status(200).json({
-        success: true,
-        data: room,
+const getSingleRoom: ControllerFunctionType = catchAsyncErrorsMiddleware(
+  async (req, res, next) => {
+    try {
+      if (!req.query.id || isNaN(+req.query.id)) {
+        return next(new ErrorHandler("Invalid Id Format.", 400));
+      }
+      const id = +req.query.id;
+      const room = await prisma.room.findUnique({
+        where: {
+          id,
+        },
       });
-      return;
-    }
+      if (room) {
+        res.status(200).json({
+          success: true,
+          data: room,
+        });
+        return;
+      }
 
-    // Room not found
-    return next(new ErrorHandler("Room not found.", 404));
-  } catch (e: unknown) {
-    return next(new ErrorHandler("A server-side error has occured", 500));
+      // Room not found
+      return next(new ErrorHandler("Room not found.", 404));
+    } catch (e: unknown) {
+      return next(new ErrorHandler("A server-side error has occured", 500));
+    }
   }
-};
+);
 
 // PUT room details /api/rooms/[id]
-const updateSingleRoom: ControllerFunctionType = async (req, res, next) => {
-  try {
-    if (!req.query.id || isNaN(+req.query.id)) {
-      return next(new ErrorHandler("Invalid Id Format.", 400));
-    }
-    const id = +req.query.id;
-    const newRoomDetails = req.body;
-    console.log(newRoomDetails);
-    const room = await prisma.room.update({
-      where: {
-        id,
-      },
-      data: newRoomDetails,
-    });
-
-    if (room) {
-      res.status(200).json({
-        success: true,
-        data: room,
+const updateSingleRoom: ControllerFunctionType = catchAsyncErrorsMiddleware(
+  async (req, res, next) => {
+    try {
+      if (!req.query.id || isNaN(+req.query.id)) {
+        return next(new ErrorHandler("Invalid Id Format.", 400));
+      }
+      const id = +req.query.id;
+      const newRoomDetails = req.body;
+      console.log(newRoomDetails);
+      const room = await prisma.room.update({
+        where: {
+          id,
+        },
+        data: newRoomDetails,
       });
-      return;
-    }
 
-    // Room not found
-    return next(new ErrorHandler("Room not found", 404));
-  } catch (e: unknown) {
-    return next(new ErrorHandler("A server-side error has occured.", 500));
+      if (room) {
+        res.status(200).json({
+          success: true,
+          data: room,
+        });
+        return;
+      }
+
+      // Room not found
+      return next(new ErrorHandler("Room not found", 404));
+    } catch (e: unknown) {
+      return next(new ErrorHandler("A server-side error has occured.", 500));
+    }
   }
-};
+);
 
 // PUT room details /api/rooms/[id]
-const deleteSingleRoom: ControllerFunctionType = async (req, res, next) => {
-  try {
-    if (!req.query.id || isNaN(+req.query.id)) {
-      return next(new ErrorHandler("Invalid Id Format.", 400));
-    }
-    const id = +req.query.id;
-    const newRoomDetails = req.body;
-    console.log(newRoomDetails);
-    const room = await prisma.room.delete({
-      where: {
-        id,
-      },
-    });
-
-    if (room) {
-      res.status(200).json({
-        success: true,
-        data: room,
+const deleteSingleRoom: ControllerFunctionType = catchAsyncErrorsMiddleware(
+  async (req, res, next) => {
+    try {
+      if (!req.query.id || isNaN(+req.query.id)) {
+        return next(new ErrorHandler("Invalid Id Format.", 400));
+      }
+      const id = +req.query.id;
+      const newRoomDetails = req.body;
+      console.log(newRoomDetails);
+      const room = await prisma.room.delete({
+        where: {
+          id,
+        },
       });
-      return;
-    }
 
-    // Room not found
-    return next(new ErrorHandler("Room not found.", 404));
-  } catch (e: unknown) {
-    return next(new ErrorHandler("A server-side error has occured.", 500));
+      if (room) {
+        res.status(200).json({
+          success: true,
+          data: room,
+        });
+        return;
+      }
+
+      // Room not found
+      return next(new ErrorHandler("Room not found.", 404));
+    } catch (e: unknown) {
+      return next(new ErrorHandler("A server-side error has occured.", 500));
+    }
   }
-};
+);
 
 export {
   allRooms,
