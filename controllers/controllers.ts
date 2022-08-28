@@ -5,6 +5,12 @@ import { prisma } from "../db";
 import ErrorHandler from "../utils/errorHandler";
 import { NextHandler } from "next-connect";
 
+export type ControllerFunctionType = (
+  req: NextApiRequest,
+  res: NextApiResponse<AllRoomsData | SingleRoomData>,
+  next: NextHandler
+) => Promise<void>;
+
 type AllRoomsData = {
   success: boolean;
   count?: number;
@@ -12,12 +18,14 @@ type AllRoomsData = {
   error?: unknown;
 };
 
+type SingleRoomData = {
+  success: boolean;
+  error?: unknown;
+  data?: Room;
+};
+
 // GET all rooms /api/rooms
-const allRooms = async (
-  req: NextApiRequest,
-  res: NextApiResponse<AllRoomsData>,
-  next: NextHandler
-) => {
+const allRooms: ControllerFunctionType = async (req, res, next) => {
   try {
     const rooms = await prisma.room.findMany();
     res.status(200).json({
@@ -31,11 +39,7 @@ const allRooms = async (
 };
 
 // POST a new room /api/rooms
-const createRoom = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: NextHandler
-) => {
+const createRoom: ControllerFunctionType = async (req, res, next) => {
   try {
     // cast the type
     const roomBody = req.body as Prisma.RoomCreateInput;
@@ -59,7 +63,7 @@ const createRoom = async (
 
     res.status(200).json({
       success: true,
-      newRoom,
+      data: newRoom,
     });
   } catch (e: unknown) {
     console.log(e);
@@ -67,18 +71,8 @@ const createRoom = async (
   }
 };
 
-type SingleRoomData = {
-  success: boolean;
-  error?: unknown;
-  data?: Room;
-};
-
 // GET room details /api/rooms/[id]
-const getSingleRoom = async (
-  req: NextApiRequest,
-  res: NextApiResponse<SingleRoomData>,
-  next: NextHandler
-) => {
+const getSingleRoom: ControllerFunctionType = async (req, res, next) => {
   try {
     if (!req.query.id || isNaN(+req.query.id)) {
       return next(new ErrorHandler("Invalid Id Format.", 400));
@@ -105,11 +99,7 @@ const getSingleRoom = async (
 };
 
 // PUT room details /api/rooms/[id]
-const updateSingleRoom = async (
-  req: NextApiRequest,
-  res: NextApiResponse<SingleRoomData>,
-  next: NextHandler
-) => {
+const updateSingleRoom: ControllerFunctionType = async (req, res, next) => {
   try {
     if (!req.query.id || isNaN(+req.query.id)) {
       return next(new ErrorHandler("Invalid Id Format.", 400));
@@ -140,11 +130,7 @@ const updateSingleRoom = async (
 };
 
 // PUT room details /api/rooms/[id]
-const deleteSingleRoom = async (
-  req: NextApiRequest,
-  res: NextApiResponse<SingleRoomData>,
-  next: NextHandler
-) => {
+const deleteSingleRoom: ControllerFunctionType = async (req, res, next) => {
   try {
     if (!req.query.id || isNaN(+req.query.id)) {
       return next(new ErrorHandler("Invalid Id Format.", 400));
