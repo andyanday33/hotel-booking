@@ -3,6 +3,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextHandler } from "next-connect";
 import ErrorHandler from "../utils/errorHandler";
 
+/**
+ * Responsible for formatting errors to return meaningful errors to the front-end
+ */
 export default (
   err:
     | ErrorHandler
@@ -22,6 +25,7 @@ export default (
     });
   }
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    // Check and process error code
     res.status(400).json({
       success: false,
       error: err,
@@ -35,7 +39,7 @@ export default (
 
     // Process error message -------------------------------
     let message = err.message.split("\n");
-
+    console.log(message);
     // Take the sentences "Argument x for data.x is missing"
     const errorSentenceRegex = /Argument .* for data\..* is missing\./g;
     const missingArgs: string[] = [];
