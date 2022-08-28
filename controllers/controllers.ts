@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Prisma, Room } from "@prisma/client";
 import Error from "next/error";
 import { prisma } from "../db";
+import ErrorHandler from "../utils/errorHandler";
+import { NextHandler } from "next-connect";
 
 type AllRoomsData = {
   success: boolean;
@@ -13,7 +15,8 @@ type AllRoomsData = {
 // GET all rooms /api/rooms
 const allRooms = async (
   req: NextApiRequest,
-  res: NextApiResponse<AllRoomsData>
+  res: NextApiResponse<AllRoomsData>,
+  next: NextHandler
 ) => {
   try {
     const rooms = await prisma.room.findMany();
@@ -23,21 +26,22 @@ const allRooms = async (
       rooms,
     });
   } catch (e: unknown) {
-    res.status(400).json({
-      success: false,
-      error: e,
-    });
+    return next(new ErrorHandler("A server-side error has occured.", 500));
   }
 };
 
 // POST a new room /api/rooms
-const createRoom = async (req: NextApiRequest, res: NextApiResponse) => {
+const createRoom = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  next: NextHandler
+) => {
   try {
     // cast the type
     const roomBody = req.body as Prisma.RoomCreateInput;
 
     if (!["KING", "TWINS", "SINGLE"].includes(roomBody.category)) {
-      throw Error;
+      return next(new ErrorHandler("Invalid category", 400));
     }
 
     // extract and process image objects for prisma creation
@@ -59,10 +63,7 @@ const createRoom = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   } catch (e: unknown) {
     console.log(e);
-    res.status(400).json({
-      success: false,
-      error: e,
-    });
+    return next(new ErrorHandler("A server-side error has occured.", 500));
   }
 };
 
@@ -75,17 +76,12 @@ type SingleRoomData = {
 // GET room details /api/rooms/[id]
 const getSingleRoom = async (
   req: NextApiRequest,
-  res: NextApiResponse<SingleRoomData>
+  res: NextApiResponse<SingleRoomData>,
+  next: NextHandler
 ) => {
   try {
     if (!req.query.id || isNaN(+req.query.id)) {
-      res.status(400).json({
-        success: false,
-        error: {
-          message: "Incorrect Id Format",
-        },
-      });
-      return;
+      return next(new ErrorHandler("Invalid Id Format.", 400));
     }
     const id = +req.query.id;
     const room = await prisma.room.findUnique({
@@ -102,34 +98,21 @@ const getSingleRoom = async (
     }
 
     // Room not found
-    res.status(404).json({
-      success: false,
-      error: {
-        message: "Not Found",
-      },
-    });
+    return next(new ErrorHandler("Room not found.", 404));
   } catch (e: unknown) {
-    res.status(400).json({
-      success: false,
-      error: e,
-    });
+    return next(new ErrorHandler("A server-side error has occured", 500));
   }
 };
 
 // PUT room details /api/rooms/[id]
 const updateSingleRoom = async (
   req: NextApiRequest,
-  res: NextApiResponse<SingleRoomData>
+  res: NextApiResponse<SingleRoomData>,
+  next: NextHandler
 ) => {
   try {
     if (!req.query.id || isNaN(+req.query.id)) {
-      res.status(400).json({
-        success: false,
-        error: {
-          message: "Incorrect Id Format",
-        },
-      });
-      return;
+      return next(new ErrorHandler("Invalid Id Format.", 400));
     }
     const id = +req.query.id;
     const newRoomDetails = req.body;
@@ -150,34 +133,21 @@ const updateSingleRoom = async (
     }
 
     // Room not found
-    res.status(404).json({
-      success: false,
-      error: {
-        message: "Not Found",
-      },
-    });
+    return next(new ErrorHandler("Room not found", 404));
   } catch (e: unknown) {
-    res.status(400).json({
-      success: false,
-      error: e,
-    });
+    return next(new ErrorHandler("A server-side error has occured.", 500));
   }
 };
 
 // PUT room details /api/rooms/[id]
 const deleteSingleRoom = async (
   req: NextApiRequest,
-  res: NextApiResponse<SingleRoomData>
+  res: NextApiResponse<SingleRoomData>,
+  next: NextHandler
 ) => {
   try {
     if (!req.query.id || isNaN(+req.query.id)) {
-      res.status(400).json({
-        success: false,
-        error: {
-          message: "Incorrect Id Format",
-        },
-      });
-      return;
+      return next(new ErrorHandler("Invalid Id Format.", 400));
     }
     const id = +req.query.id;
     const newRoomDetails = req.body;
@@ -197,17 +167,9 @@ const deleteSingleRoom = async (
     }
 
     // Room not found
-    res.status(404).json({
-      success: false,
-      error: {
-        message: "Not Found",
-      },
-    });
+    return next(new ErrorHandler("Room not found.", 404));
   } catch (e: unknown) {
-    res.status(400).json({
-      success: false,
-      error: e,
-    });
+    return next(new ErrorHandler("A server-side error has occured.", 500));
   }
 };
 
