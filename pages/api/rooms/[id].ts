@@ -5,7 +5,7 @@ import {
   getSingleRoom,
   updateSingleRoom,
 } from "../../../controllers/controllers";
-import onError from "../../../middleware/errorMiddleware";
+import onError from "../../../middleware/errorFormattingMiddleware";
 
 const handler = nc<NextApiRequest, NextApiResponse>({ onError });
 
