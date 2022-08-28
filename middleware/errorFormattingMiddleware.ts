@@ -31,19 +31,30 @@ export default (
     });
   }
   if (err instanceof Prisma.PrismaClientValidationError) {
-    // Missing field
+    // Missing field error
 
-    // Process message
+    // Process error message -------------------------------
     let message = err.message.split("\n");
-    // Take the sentence "Argument x for data.x is missing"
-    let sentence = message[message.length - 4];
-    // Take the name of x in the sentence
-    let missingArg = sentence.split(" ")[1];
 
+    // Take the sentences "Argument x for data.x is missing"
+    const errorSentenceRegex = /Argument .* for data\..* is missing\./g;
+    const missingArgs: string[] = [];
+    message.forEach((sentence) => {
+      if (sentence.match(errorSentenceRegex)) {
+        // Take x from array "[Argument, x, for, data.x, is, missing]"
+        missingArgs.push(sentence.split(" ")[1]);
+      }
+    });
+
+    const responseMessage =
+      missingArgs.length === 1
+        ? `Property ${missingArgs[0]} is missing from the request body.`
+        : `Properties ${missingArgs.toString()} are missing from the request body`;
+    // END Processing error message ------------------------
     res.status(400).json({
       success: false,
       error: err,
-      message: `Property "${missingArg}" is missing in request body.`,
+      message: responseMessage,
       stack: err.stack,
     });
   }
