@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Prisma, Room } from "@prisma/client";
-import Error from "next/error";
 import { prisma } from "../db";
 import ErrorHandler from "../utils/errorHandler";
 import { NextHandler } from "next-connect";

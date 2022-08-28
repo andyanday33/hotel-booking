@@ -1,4 +1,4 @@
-const { PrismaClient, Category } = require("@prisma/client");
+const { PrismaClient } = require("@prisma/client");
 
 const rooms = require("../data/rooms.json");
 
