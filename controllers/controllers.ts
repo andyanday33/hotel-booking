@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Prisma, PrismaClient, Room } from "@prisma/client";
+import { Prisma, Room } from "@prisma/client";
 import Error from "next/error";
 import { prisma } from "../db";
 

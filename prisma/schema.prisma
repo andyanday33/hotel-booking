@@ -36,7 +36,7 @@ model Room {
   images RoomImage[]
   category Category
   reviews Review[]
-  creator User? @relation(fields: [creatorId], references: [id])
+  creator User? @relation(fields: [creatorId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
   creatorId Int?
   createdAt DateTime @default(now())
 }
@@ -50,7 +50,7 @@ enum Category {
 model RoomImage {
   publicId String @unique @id
   url String
-  room Room @relation(fields: [roomId], references: [id])
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   roomId Int
 }
 
@@ -58,8 +58,8 @@ model Review {
   id Int @id @default(autoincrement())
   rating Float
   comment String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId Int
-  room Room @relation(fields: [roomId], references: [id])
+  room Room @relation(fields: [roomId], references: [id],  onDelete: Cascade, onUpdate: Cascade)
   roomId Int
 }
