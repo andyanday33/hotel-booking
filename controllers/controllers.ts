@@ -4,6 +4,7 @@ import Error from "next/error";
 import { prisma } from "../db";
 import ErrorHandler from "../utils/errorHandler";
 import { NextHandler } from "next-connect";
+import catchAsyncErrorsMiddleware from "../middleware/catchAsyncErrorsMiddleware";
 
 export type ControllerFunctionType = (
   req: NextApiRequest,
@@ -39,8 +40,8 @@ const allRooms: ControllerFunctionType = async (req, res, next) => {
 };
 
 // POST a new room /api/rooms
-const createRoom: ControllerFunctionType = async (req, res, next) => {
-  try {
+const createRoom: ControllerFunctionType = catchAsyncErrorsMiddleware(
+  async (req, res, next) => {
     // cast the type
     const roomBody = req.body as Prisma.RoomCreateInput;
 
@@ -65,11 +66,8 @@ const createRoom: ControllerFunctionType = async (req, res, next) => {
       success: true,
       data: newRoom,
     });
-  } catch (e: unknown) {
-    console.log(e);
-    return next(new ErrorHandler("A server-side error has occured.", 500));
   }
-};
+);
 
 // GET room details /api/rooms/[id]
 const getSingleRoom: ControllerFunctionType = async (req, res, next) => {
