@@ -1,4 +1,5 @@
 import { prisma } from "../prisma";
+// TODO: try to make this more general purpose
 /**
  * Helper function which returns filtered data from prisma.
  *
