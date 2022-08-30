@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Prisma, Room } from "@prisma/client";
-import { prisma } from "../db";
+import { prisma } from "../prisma";
 import ErrorHandler from "../utils/errorHandler";
 import { NextHandler } from "next-connect";
 import catchAsyncErrorsMiddleware from "../middleware/catchAsyncErrorsMiddleware";
+import queryAPI from "../utils/QueryAPI";
 
 export type ControllerFunctionType = (
   req: NextApiRequest,
@@ -25,18 +26,16 @@ type SingleRoomData = {
 };
 
 // GET all rooms /api/rooms
-const allRooms: ControllerFunctionType = async (req, res, next) => {
-  try {
-    const rooms = await prisma.room.findMany();
+const allRooms: ControllerFunctionType = catchAsyncErrorsMiddleware(
+  async (req, res, next) => {
+    const rooms = await queryAPI(req.query);
     res.status(200).json({
       success: true,
       count: rooms.length,
       rooms,
     });
-  } catch (e: unknown) {
-    return next(new ErrorHandler("A server-side error has occured.", 500));
   }
-};
+);
 
 // POST a new room /api/rooms
 const createRoom: ControllerFunctionType = catchAsyncErrorsMiddleware(

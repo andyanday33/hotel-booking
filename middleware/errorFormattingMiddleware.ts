@@ -25,7 +25,7 @@ export default (
     });
   }
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    // Check and process error code
+    // TODO: Check and process error code
     res.status(400).json({
       success: false,
       error: err,
