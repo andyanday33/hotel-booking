@@ -4,7 +4,7 @@ import { prisma } from "../prisma";
 import ErrorHandler from "../utils/errorHandler";
 import { NextHandler } from "next-connect";
 import catchAsyncErrorsMiddleware from "../middleware/catchAsyncErrorsMiddleware";
-import queryAPI from "../utils/QueryAPI";
+import queryRoomAPI from "../utils/queryRoomAPI";
 
 export type ControllerFunctionType = (
   req: NextApiRequest,
@@ -28,7 +28,7 @@ type SingleRoomData = {
 // GET all rooms /api/rooms
 const allRooms: ControllerFunctionType = catchAsyncErrorsMiddleware(
   async (req, res, next) => {
-    const rooms = await queryAPI(req.query);
+    const rooms = await queryRoomAPI(req.query);
     res.status(200).json({
       success: true,
       count: rooms.length,
