@@ -13,8 +13,8 @@ export default async function queryRoomAPI(
   // Delete array queries, prisma does not accept them.
   let nonArrayQueries = { ...query };
   Object.keys(query).forEach((field) => {
-    if (typeof field !== "string") {
-      delete nonArrayQueries[`${field}`];
+    if (typeof query[field] !== "string") {
+      delete nonArrayQueries[field];
     }
   });
 
