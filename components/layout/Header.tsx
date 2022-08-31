@@ -12,8 +12,11 @@ const Header = (props: Props) => {
           </li>
         </ul>
       </div>
-      <div className="navbar-center text-2xl" id="bookit-logo">
-        <p className="p-2 border-b-2 border-gray-800 rounded-lg shadow-xl">
+      <div className="navbar-center" id="bookit-logo">
+        <p
+          className="p-2 text-xl normal-case border-b-2 border-gray-800 rounded-lg shadow-xl
+        hover:border-l-2 hover:border-r-2 transition-all duration-100"
+        >
           Book-IT
         </p>
       </div>
