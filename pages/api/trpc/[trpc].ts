@@ -5,6 +5,7 @@ import { z } from "zod";
 
 export const appRouter = trpc.router().query("getAllRooms", {
   input: z.object({
+    id: z.number().nullish(),
     name: z.string().nullish(),
     location: z.string().nullish(),
     pricePerNight: z.string().nullish(),
@@ -25,6 +26,7 @@ export const appRouter = trpc.router().query("getAllRooms", {
   resolve({ input }) {
     return prisma.room.findMany({
       where: {
+        id: input.id || undefined,
         name: {
           contains: input.name || undefined, // replace null with undefined
         },
