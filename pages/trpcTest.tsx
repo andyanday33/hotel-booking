@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { trpc } from "../utils/trpc";
 
 const TrpcTest: NextPage = (props) => {
-  const { data, error } = trpc.useQuery(["getAllRooms", { name: "" }]);
+  const { data, error } = trpc.useQuery(["rooms.getAllRooms", { name: "" }]);
   if (!data && !error) {
     return <div>Loading...</div>;
   }
