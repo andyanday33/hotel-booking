@@ -11,7 +11,14 @@ const TrpcTest: NextPage = (props) => {
   }
   return (
     <div>
-      <ul>{data && data.map((room) => <li key={room.id}>{room.name}</li>)}</ul>
+      <ul>
+        {data &&
+          data.map((room) => (
+            <li key={room.id}>
+              {room.name} - ${room.pricePerNight} - {room.category}
+            </li>
+          ))}
+      </ul>
     </div>
   );
 };
