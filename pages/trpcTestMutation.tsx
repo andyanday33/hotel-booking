@@ -41,7 +41,7 @@ const TrpcTestMutation: NextPage = (props) => {
 
   return (
     <>
-      <div>{mutation.error && <p>Error!</p>}</div>
+      <div>{mutation.error && <p>Error! {mutation.error.message}</p>}</div>
       <div>{mutation.isLoading && <p>Loading...</p>}</div>
       <div>{mutation.data && mutation.data.name}</div>
       <button onClick={handleMutation}>Mutate!</button>

@@ -8,6 +8,7 @@ const createRouter = () => {
   return trpc.router();
 };
 
+const RESULTS_PER_PAGE = 5;
 const allRooms = createRouter().query("getAllRooms", {
   input: z.object({
     id: z.number().optional(),
@@ -27,8 +28,18 @@ const allRooms = createRouter().query("getAllRooms", {
     category: z.string().optional(),
     creatorId: z.string().optional(),
     createdAt: z.string().optional(),
+    page: z.number().optional(),
   }),
   resolve({ input }) {
+    const paginationOptions = input.page
+      ? {
+          skip: (input.page - 1) * RESULTS_PER_PAGE,
+          take: RESULTS_PER_PAGE,
+        }
+      : ({
+          take: RESULTS_PER_PAGE,
+        } as { skip?: number; take: number });
+
     return prisma.room.findMany({
       where: {
         id: input.id,
@@ -39,6 +50,7 @@ const allRooms = createRouter().query("getAllRooms", {
           contains: input.location,
         },
       },
+      ...paginationOptions,
     });
   },
 });
