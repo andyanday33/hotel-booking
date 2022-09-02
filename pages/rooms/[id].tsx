@@ -1,23 +1,26 @@
 import { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
-import Header from "../../components/layout/Header";
-import Footer from "../../components/layout/Footer";
+import Layout from "../../components/layout/Layout";
 
 const TrpcTest: NextPage = (props) => {
   const router = useRouter();
   const { id } = router.query;
 
   if (!id || isNaN(+id)) {
-    return <div>Please provide a valid id.</div>;
+    // Do not send a request for non-numeric id;
+    return (
+      <Layout>
+        <div>Please provide a valid id.</div>
+      </Layout>
+    );
   }
 
   const { data: room, error } = trpc.useQuery(["getSingleRoom", { id: +id }]);
   return (
-    <>
+    <Layout>
       {/* TODO: consider extracting layout
       TODO: pass down data as a prop if not initial request */}
-      <Header />
       <main className="min-w-full min-h-screen bg-gray-800">
         <ul>
           {/* TODO: add a spinner here */}
@@ -30,8 +33,7 @@ const TrpcTest: NextPage = (props) => {
           )}
         </ul>
       </main>
-      <Footer />
-    </>
+    </Layout>
   );
 };
 
