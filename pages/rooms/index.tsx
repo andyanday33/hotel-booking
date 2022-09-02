@@ -6,17 +6,14 @@ import Footer from "../../components/layout/Footer";
 
 const TrpcTest: NextPage = (props) => {
   const { data, error } = trpc.useQuery(["getAllRooms", { name: "" }]);
-  if (!data && !error) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>Error! {error?.message}</div>;
-  }
   return (
     <>
       <Header />
       <main className="min-w-full min-h-screen bg-gray-800">
         <ul>
+          {/* TODO: add a spinner here */}
+          {!data && !error && <p>Loading</p>}
+          {error && <p>Error: {error.message}</p>}
           {data &&
             data.map((room) => (
               <Link href={`/rooms/${room.id}`}>
