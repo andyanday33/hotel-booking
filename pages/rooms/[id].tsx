@@ -13,18 +13,15 @@ const TrpcTest: NextPage = (props) => {
   }
 
   const { data: room, error } = trpc.useQuery(["getSingleRoom", { id: +id }]);
-  if (!room && !error) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>Error! {error?.message}</div>;
-  }
   return (
     <>
       {/* TODO: consider extracting layout */}
       <Header />
       <main className="min-w-full min-h-screen bg-gray-800">
         <ul>
+          {/* TODO: add a spinner here */}
+          {!room && !error && <p>Loading</p>}
+          {error && <p>Error: {error.message}</p>}
           {room && (
             <li key={room.id}>
               {room.name} - ${room.pricePerNight} - {room.category}
