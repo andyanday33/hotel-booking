@@ -16,9 +16,11 @@ const TrpcTest: NextPage = (props) => {
         {data &&
           data.map((room) => (
             <Link href={`/rooms/${room.id}`}>
-              <li key={room.id}>
-                {room.name} - ${room.pricePerNight} - {room.category}
-              </li>
+              <a>
+                <li key={room.id}>
+                  {room.name} - ${room.pricePerNight} - {room.category}
+                </li>
+              </a>
             </Link>
           ))}
       </ul>
