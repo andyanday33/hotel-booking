@@ -1,8 +1,9 @@
 import { NextPage } from "next";
-import { trpc } from "../utils/trpc";
+import Link from "next/link";
+import { trpc } from "../../utils/trpc";
 
 const TrpcTest: NextPage = (props) => {
-  const { data, error } = trpc.useQuery(["rooms.getAllRooms", { name: "" }]);
+  const { data, error } = trpc.useQuery(["getAllRooms", { name: "" }]);
   if (!data && !error) {
     return <div>Loading...</div>;
   }
@@ -14,9 +15,11 @@ const TrpcTest: NextPage = (props) => {
       <ul>
         {data &&
           data.map((room) => (
-            <li key={room.id}>
-              {room.name} - ${room.pricePerNight} - {room.category}
-            </li>
+            <Link href={`/rooms/${room.id}`}>
+              <li key={room.id}>
+                {room.name} - ${room.pricePerNight} - {room.category}
+              </li>
+            </Link>
           ))}
       </ul>
     </div>
