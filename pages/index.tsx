@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Header />
-      <main className="min-w-full min-h-full bg-gray-800">
+      <main className="min-w-full min-h-screen bg-gray-800">
         <h1>Test</h1>
       </main>
       <Footer />
