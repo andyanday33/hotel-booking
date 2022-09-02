@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 type Props = {};
@@ -8,7 +9,14 @@ const Header = (props: Props) => {
       <div className="navbar-start hidden lg:flex">
         <ul className="menu menu-horizontal p-0">
           <li>
-            <a>Home</a>
+            <Link href="/">
+              <a>Home</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/rooms">
+              <a>Rooms and Hotels</a>
+            </Link>
           </li>
         </ul>
       </div>
