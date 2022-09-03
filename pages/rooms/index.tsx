@@ -8,22 +8,12 @@ const TrpcTest: NextPage = (props) => {
   const { data, error } = trpc.useQuery(["room.getAllRooms", { name: "" }]);
   return (
     <Layout>
-      <ul>
+      <section className="grid gap-3 pt-3 mt-3 xs:grid-cols-1 xs:grid-rows-6 md:grid-cols-2 md:grid-rows-3 lg:grid-cols-3 lg:grid-rows-2 justify-items-center">
         {/* TODO: add a spinner here */}
         {!data && !error && <p>Loading</p>}
         {error && <p>Error: {error.message}</p>}
-        {data &&
-          data.map((room) => (
-            <Link href={`/rooms/${room.id}`}>
-              <a>
-                <li key={room.id}>
-                  {room.name} - ${room.pricePerNight} - {room.category}
-                  <PostingCard room={room} />
-                </li>
-              </a>
-            </Link>
-          ))}
-      </ul>
+        {data && data.map((room) => <PostingCard room={room} />)}
+      </section>
     </Layout>
   );
 };
