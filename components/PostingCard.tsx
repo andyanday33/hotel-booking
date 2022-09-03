@@ -11,7 +11,7 @@ const PostingCard: React.FC<Props> = ({ room }) => {
     <Link href={`/rooms/${room.id}`}>
       <a className="w-96">
         <div className="card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
-          <figure className="">
+          <figure className="min-h-[16rem]">
             {room.images && (
               <img src={room.images[0]?.url} alt="Hotel-House Posting Image" />
             )}
@@ -29,6 +29,15 @@ const PostingCard: React.FC<Props> = ({ room }) => {
               )}
               {room.breakfast && (
                 <div className="badge badge-outline">Breakfast</div>
+              )}
+              {room.petsAllowed && (
+                <div className="badge badge-outline">Pets Allowed</div>
+              )}
+              {room.airconditioned && (
+                <div className="badge badge-outline">Air Conditioned</div>
+              )}
+              {room.roomCleaning && (
+                <div className="badge badge-outline">Room Cleaning</div>
               )}
             </div>
           </div>
