@@ -56,6 +56,9 @@ export const roomRouter = createRouter()
             contains: input.location,
           },
         },
+        include: {
+          images: true,
+        },
         ...paginationOptions,
       });
     },
