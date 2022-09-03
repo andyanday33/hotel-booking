@@ -10,8 +10,8 @@ const PostingCard: React.FC<Props> = ({ room }) => {
   return (
     <Link href={`/rooms/${room.id}`}>
       <a className="w-80">
-        <div className="card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
-          <figure className="min-h-[16rem]">
+        <div className="grid grid-rows-2 card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
+          <figure className="object-fill">
             {room.images && (
               <img src={room.images[0]?.url} alt="Hotel-House Posting Image" />
             )}
