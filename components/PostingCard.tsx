@@ -1,6 +1,7 @@
 import { Room, RoomImage } from "@prisma/client";
 import React from "react";
 import Link from "next/link";
+import Rating from "./Rating";
 
 type Props = {
   room: Room & { images: RoomImage[] };
@@ -10,18 +11,29 @@ const PostingCard: React.FC<Props> = ({ room }) => {
   return (
     <Link href={`/rooms/${room.id}`}>
       <a className="w-80">
-        <div className="grid grid-rows-2 card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
-          <figure className="object-fill">
+        <div className="flex card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
+          <figure className="object-fill flex flex-1">
             {room.images && (
-              <img src={room.images[0]?.url} alt="Hotel-House Posting Image" />
+              <img
+                src={room.images[0]?.url}
+                alt="Hotel-House Posting Image"
+                className="m-auto"
+              />
             )}
           </figure>
-          <div className="card-body">
-            <h2 className="card-title">
+          <div className="flex card-body">
+            <h2 className="mt-auto card-title">
               {room.name}
               <div className="badge badge-secondary">NEW</div>
             </h2>
-            <p className="text-xs">{room.description.substring(0, 100)}...</p>
+            <p className="max-h-[3rem] text-xs">
+              {room.description.substring(0, 100)}...
+            </p>
+            <Rating
+              roomName={room.name}
+              rating={room.ratings}
+              numberOfReviews={room.numOfReviews}
+            />
             <div className="card-actions justify-end">
               {/* TODO: add other badges here */}
               {room.internet && (
