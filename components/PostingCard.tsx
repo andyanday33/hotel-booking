@@ -29,6 +29,14 @@ const PostingCard: React.FC<Props> = ({ room }) => {
             <p className="max-h-[3rem] text-xs">
               {room.description.substring(0, 100)}...
             </p>
+            <section className="price mt-2">
+              <p>
+                <span>
+                  <strong>£{room.pricePerNight.toFixed(2)}</strong>
+                </span>{" "}
+                / Night
+              </p>
+            </section>
             <Rating
               roomName={room.name}
               rating={room.ratings}
