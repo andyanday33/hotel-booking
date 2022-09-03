@@ -33,6 +33,7 @@ const PostingCard: React.FC<Props> = ({ room }) => {
               roomName={room.name}
               rating={room.ratings}
               numberOfReviews={room.numOfReviews}
+              readOnly={true}
             />
             <div className="card-actions justify-end">
               {/* TODO: add other badges here */}
