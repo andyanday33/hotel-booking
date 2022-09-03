@@ -31,7 +31,7 @@ const Layout: React.FC<Props> = ({ children }) => {
                 </svg>
               </label>
             </div>
-            <div className="flex-1 px-2 mx-2">BOOK-IT</div>
+            <div className="flex-1 px-2 mx-2 text-2xl">BOOK-IT</div>
             <div className="flex-none hidden lg:block">
               <ul className="menu menu-horizontal">
                 {/* <!-- Navbar menu content here --> */}
