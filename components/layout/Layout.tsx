@@ -1,14 +1,24 @@
 import React from "react";
 import Footer from "./Footer";
 import Link from "next/link";
+import Head from "next/head";
 
 type Props = {
   children?: React.ReactNode;
+  title: string;
 };
 
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout: React.FC<Props> = ({
+  children,
+  title = "Book Best Hotels for your Holiday",
+}) => {
   return (
     <>
+      <Head>
+        <title>{title}</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="drawer">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
