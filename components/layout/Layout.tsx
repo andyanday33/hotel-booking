@@ -5,12 +5,12 @@ import Head from "next/head";
 
 type Props = {
   children?: React.ReactNode;
-  title: string;
+  title?: string;
 };
 
 const Layout: React.FC<Props> = ({
   children,
-  title = "Book Best Hotels for your Holiday",
+  title = "BOOK-IT: Book Best Hotels for your Holiday",
 }) => {
   return (
     <>
