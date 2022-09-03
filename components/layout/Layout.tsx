@@ -9,7 +9,7 @@ type Props = {
 const Layout: React.FC<Props> = ({ children }) => {
   return (
     <>
-      <div className="drawer bg-blue-700 text-white">
+      <div className="drawer">
         <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
           {/* <!-- Navbar --> */}
@@ -49,24 +49,25 @@ const Layout: React.FC<Props> = ({ children }) => {
             </div>
           </nav>
           {/* <!-- Page content here --> */}
-          <main className="min-w-full min-h-screen bg-gray-800">
-            {children}
-          </main>
+          <main className="bg-gray-800">{children}</main>
         </div>
         <aside className="drawer-side">
           <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
           <ul className="menu p-4 overflow-y-auto w-80 bg-base-100">
             {/* <!-- Sidebar content here --> */}
             <li>
-              <a>Sidebar Item 1</a>
+              <Link href="/">
+                <a>Home</a>
+              </Link>
             </li>
             <li>
-              <a>Sidebar Item 2</a>
+              <Link href="/rooms">
+                <a>Hotel and Home Postings</a>
+              </Link>
             </li>
           </ul>
         </aside>
       </div>
-
       <Footer />
     </>
   );
