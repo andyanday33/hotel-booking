@@ -12,7 +12,7 @@ const TrpcTest: NextPage = (props) => {
         {/* TODO: add a spinner here */}
         {!data && !error && <p>Loading</p>}
         {error && <p>Error: {error.message}</p>}
-        {data && data.map((room) => <PostingCard room={room} />)}
+        {data && data.map((room) => <PostingCard key={room.id} room={room} />)}
       </section>
     </Layout>
   );
