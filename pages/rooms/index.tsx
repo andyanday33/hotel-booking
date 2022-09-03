@@ -4,7 +4,7 @@ import { trpc } from "../../utils/trpc";
 import Layout from "../../components/layout/Layout";
 
 const TrpcTest: NextPage = (props) => {
-  const { data, error } = trpc.useQuery(["getAllRooms", { name: "" }]);
+  const { data, error } = trpc.useQuery(["room.getAllRooms", { name: "" }]);
   return (
     <Layout>
       <ul>

@@ -7,7 +7,7 @@ type ImageType = {
 };
 
 const TrpcTestMutation: NextPage = (props) => {
-  const mutation = trpc.useMutation("postNewRoom");
+  const mutation = trpc.useMutation("room.postNewRoom");
 
   const handleMutation = async () => {
     mutation.mutate({

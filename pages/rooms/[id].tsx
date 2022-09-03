@@ -16,7 +16,10 @@ const TrpcTest: NextPage = (props) => {
     );
   }
 
-  const { data: room, error } = trpc.useQuery(["getSingleRoom", { id: +id }]);
+  const { data: room, error } = trpc.useQuery([
+    "room.getSingleRoom",
+    { id: +id },
+  ]);
   return (
     <Layout>
       {/* TODO: consider extracting layout
