@@ -5,7 +5,14 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        sm: "776px",
+        md: "985px",
+        lg: "1170px",
+        // => @media (min-width: 1200px) { ... }
+      },
+    },
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
 };
