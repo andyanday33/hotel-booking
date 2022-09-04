@@ -13,7 +13,7 @@ const ImageSchema = z.object({
   url: z.string(),
 });
 
-const RESULTS_PER_PAGE = 6;
+const RESULTS_PER_PAGE = 10;
 export const roomRouter = createRouter()
   .query("getAllRooms", {
     input: z.object({

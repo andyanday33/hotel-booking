@@ -35,7 +35,7 @@ const PostingCard: React.FC<Props> = ({ room }) => {
               </p>
             </section>
             <Rating
-              roomName={room.name}
+              roomId={room.id}
               rating={room.ratings}
               numberOfReviews={room.numOfReviews}
               readOnly={true}

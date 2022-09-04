@@ -3,14 +3,14 @@ import React from "react";
 type Props = {
   rating: number;
   numberOfReviews: number;
-  roomName: string;
+  roomId: number;
   readOnly?: boolean;
 };
 
 const Rating = ({
   rating,
   numberOfReviews,
-  roomName,
+  roomId,
   readOnly = false,
 }: Props) => {
   return (
@@ -19,7 +19,7 @@ const Rating = ({
         {/* Default checked hidden rating for 0 pointed postings */}
         <input
           type="radio"
-          name={`rating-${roomName}`}
+          name={`rating-${roomId}`}
           className="rating-hidden hidden"
           checked={rating === 0}
           readOnly={readOnly}
@@ -29,14 +29,14 @@ const Rating = ({
           <React.Fragment key={i}>
             <input
               type="radio"
-              name={`rating-${roomName}`}
+              name={`rating-${roomId}`}
               className="bg-orange-400 mask mask-star-2 mask-half-1"
               checked={i < rating && i + 0.5 >= rating}
               readOnly={readOnly}
             />
             <input
               type="radio"
-              name={`rating-${roomName}`}
+              name={`rating-${roomId}`}
               className="bg-orange-400 mask mask-star-2 mask-half-2"
               checked={i + 0.5 < rating && i + 1 >= rating}
               readOnly={readOnly}
