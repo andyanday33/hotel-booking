@@ -25,10 +25,8 @@ const ImageWithFallback: React.FC<Props> = ({
         src="/placeholder.jpeg"
         alt="Hotel-House Posting Placeholder Image"
         className="object-contain"
-        layout="intrinsic"
-        width={500}
-        height={500}
         unoptimized
+        {...props}
       />
     );
   }
