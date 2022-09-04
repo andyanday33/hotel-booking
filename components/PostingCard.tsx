@@ -14,7 +14,7 @@ const PostingCard: React.FC<Props> = ({ room }) => {
       <a className="">
         <div className="card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
           <div className="container h-[75%] xs:h-[50%] lg:h-[40%]">
-            <figure className="flex ">
+            <figure className="flex h-full">
               {room.images && (
                 <Image
                   src={room.images[0]?.url}

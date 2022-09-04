@@ -21,7 +21,7 @@ const Image: React.FC<Props> = ({ src, fallBackSrc, ...props }) => {
   }, []);
 
   return (
-    <img ref={imgRef} src={imgSource} {...props} className="object-cover" />
+    <img ref={imgRef} src={imgSource} {...props} className="object-fill" />
   );
 };
 
