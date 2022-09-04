@@ -13,16 +13,19 @@ const PostingCard: React.FC<Props> = ({ room }) => {
     <Link href={`/rooms/${room.id}`}>
       <a className="">
         <div className="card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
-          <figure className="flex h-[75%] xs:h-[50%]">
-            {room.images && (
-              <Image
-                src={room.images[0]?.url}
-                alt="Hotel-House Posting Image"
-                className="m-auto"
-                fallBackSrc="/placeholder.jpeg"
-              />
-            )}
-          </figure>
+          <div className="container h-[75%] xs:h-[50%] lg:h-[40%]">
+            <figure className="flex ">
+              {room.images && (
+                <Image
+                  src={room.images[0]?.url}
+                  alt="Hotel-House Posting Image"
+                  className="m-auto"
+                  fallBackSrc="/placeholder.jpeg"
+                />
+              )}
+            </figure>
+          </div>
+
           <div className="flex card-body">
             <h2 className="card-title text-sm h-[35%]">
               {room.name}
