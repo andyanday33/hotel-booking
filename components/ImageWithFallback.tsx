@@ -24,7 +24,7 @@ const ImageWithFallback: React.FC<Props> = ({
       <Image
         src="/placeholder.jpeg"
         alt="Hotel-House Posting Placeholder Image"
-        className="m-auto"
+        className="object-contain"
         layout="intrinsic"
         width={500}
         height={500}
