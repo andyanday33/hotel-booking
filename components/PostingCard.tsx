@@ -22,7 +22,7 @@ const PostingCard: React.FC<Props> = ({ room }) => {
             )}
           </figure>
           <div className="flex card-body">
-            <h2 className="card-title text-sm h-[25%]">
+            <h2 className="card-title text-sm h-[35%]">
               {room.name}
               <div className="badge badge-secondary">NEW</div>
             </h2>
