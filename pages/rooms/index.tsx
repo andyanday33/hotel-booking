@@ -8,10 +8,10 @@ const TrpcTest: NextPage = (props) => {
   const { data, error } = trpc.useQuery(["room.getAllRooms", { name: "" }]);
   return (
     <Layout>
-      <h2 className="text-center sm:text-start mx-14 md:mx-40 my-14 lg:mx-14 text-4xl">
+      <h2 className="text-center xs:text-start my-14 mx-[5%] text-4xl">
         All Stays
       </h2>
-      <section className="mx-14 md:mx-40 lg:mx-14 flex gap-6 flex-wrap justify-evenly sm:justify-between">
+      <section className="mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {/* TODO: add a spinner here */}
         {!data && !error && <p>Loading</p>}
         {error && <p>Error: {error.message}</p>}
