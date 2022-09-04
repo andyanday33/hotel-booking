@@ -15,7 +15,6 @@ const Image: React.FC<Props> = ({ src, fallBackSrc, ...props }) => {
   useEffect(() => {
     // Add placeholder image if the image has not been loaded properly
     if (imgRef.current && imgRef.current.naturalWidth === 0) {
-      console.log("aaaaaaaaa");
       setImgSource(fallBackSrc);
     }
   }, []);
