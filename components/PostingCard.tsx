@@ -12,7 +12,7 @@ const PostingCard: React.FC<Props> = ({ room }) => {
     <Link href={`/rooms/${room.id}`}>
       <a className="w-80">
         <div className="flex card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
-          <figure className="object-fill flex flex-1">
+          <figure className="object-fill flex h-40">
             {room.images && (
               <img
                 src={room.images[0]?.url}
@@ -21,15 +21,12 @@ const PostingCard: React.FC<Props> = ({ room }) => {
               />
             )}
           </figure>
-          <div className="flex card-body">
-            <h2 className="mt-auto card-title">
+          <div className="h-100 flex card-body">
+            <h2 className="card-title h-40">
               {room.name}
               <div className="badge badge-secondary">NEW</div>
             </h2>
-            <p className="max-h-[3rem] text-xs">
-              {room.description.substring(0, 100)}...
-            </p>
-            <section className="price mt-2">
+            <section className="h-5 price mt-2">
               <p>
                 <span>
                   <strong>£{room.pricePerNight.toFixed(2)}</strong>
