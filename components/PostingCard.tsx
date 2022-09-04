@@ -17,24 +17,12 @@ const PostingCard: React.FC<Props> = ({ room }) => {
           <div className="container min-h-[30%] max-h-[60%] md:h-[40%]">
             <figure className="flex h-full">
               {/* There are images for this room */}
-              {room.images && room.images[0] && (
+              {room.images && (
                 <ImageWithFallback
-                  src={room.images[0].url}
+                  src={room.images[0]?.url}
                   alt="Hotel-House Posting Image"
                   className="m-auto"
                   fallBackSrc="/placeholder.jpeg"
-                  layout="intrinsic"
-                  width={500}
-                  height={500}
-                  unoptimized
-                />
-              )}
-              {/* Images are loaded but there are none */}
-              {room.images && !room.images[0] && (
-                <Image
-                  src="/placeholder.jpeg"
-                  alt="Hotel-House Posting Placeholder Image"
-                  className="m-auto"
                   layout="intrinsic"
                   width={500}
                   height={500}

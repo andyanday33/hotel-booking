@@ -2,7 +2,7 @@ import React, { ReactEventHandler, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 type Props = {
-  src: string;
+  src?: string;
   fallBackSrc: string;
   alt?: string;
   className?: string;
@@ -18,23 +18,33 @@ const ImageWithFallback: React.FC<Props> = ({
   layout = "fill",
   ...props
 }) => {
+  // If source is undefined or not provided
+  if (!src) {
+    return (
+      <Image
+        src="/placeholder.jpeg"
+        alt="Hotel-House Posting Placeholder Image"
+        className="m-auto"
+        layout="intrinsic"
+        width={500}
+        height={500}
+        unoptimized
+      />
+    );
+  }
+
   const [imgSource, setImgSource] = useState(src);
-  // const imgRef = useRef<HTMLImageElement>(null);
-  // useEffect(() => {
-  //   // Add placeholder image if the image has not been loaded properly
-  //   if (imgRef.current && imgRef.current.naturalWidth === 0) {
-  //     setImgSource(fallBackSrc);
-  //   }
-  // }, []);
 
   // Add placeholder image if the image has not been loaded properly
   const handleError = () => {
+    console.log("here x");
     setImgSource(fallBackSrc);
   };
 
   const handlePossibleError: ReactEventHandler<HTMLImageElement> = (e) => {
     // Add placeholder image if the image has not been loaded properly
     if (e.currentTarget.naturalWidth === 0) {
+      console.log("here");
       setImgSource(fallBackSrc);
     }
   };
