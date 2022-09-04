@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
 import Layout from "../../components/layout/Layout";
+import ImageWithFallback from "../../components/ImageWithFallback";
 
 const TrpcTest: NextPage = (props) => {
   const router = useRouter();
@@ -25,16 +26,20 @@ const TrpcTest: NextPage = (props) => {
       {/* TODO: consider extracting layout
       TODO: pass down data as a prop if not initial request */}
       <main className="min-w-full min-h-screen bg-gray-800">
-        <ul>
+        <section className="room-details my-14 mx-16">
           {/* TODO: add a spinner here */}
           {!room && !error && <p>Loading</p>}
           {error && <p>Error: {error.message}</p>}
           {room && (
-            <li key={room.id}>
-              {room.name} - ${room.pricePerNight} - {room.category}
-            </li>
+            <>
+              <h2 className="text-2xl">{room.name}</h2>
+              <ImageWithFallback
+                src={room.images[0].url}
+                fallBackSrc={"/placeholder.jpeg"}
+              />
+            </>
           )}
-        </ul>
+        </section>
       </main>
     </Layout>
   );
