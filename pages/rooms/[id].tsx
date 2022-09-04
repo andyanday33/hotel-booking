@@ -33,7 +33,7 @@ const TrpcTest: NextPage = (props) => {
           {error && <p>Error: {error.message}</p>}
           {room && (
             <>
-              <section className="room-details row-[2] xs:max-w-[50%] mr-4">
+              <section className="room-details text-center sm:text-start row-[2] mx-4 sm:mx-0 sm:max-w-[50%] mr-4">
                 <h2 className="text-4xl mb-4">{room.name}</h2>
                 <p>{room.description}</p>
               </section>
