@@ -2,6 +2,7 @@ import { Room, RoomImage } from "@prisma/client";
 import React from "react";
 import Link from "next/link";
 import Rating from "./Rating";
+import Image from "./Image";
 
 type Props = {
   room: Room & { images: RoomImage[] };
@@ -12,12 +13,13 @@ const PostingCard: React.FC<Props> = ({ room }) => {
     <Link href={`/rooms/${room.id}`}>
       <a className="">
         <div className="card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
-          <figure className="object-cover flex h-[75%] xs:h-[50%]">
+          <figure className="flex h-[75%] xs:h-[50%]">
             {room.images && (
-              <img
+              <Image
                 src={room.images[0]?.url}
                 alt="Hotel-House Posting Image"
                 className="m-auto"
+                fallBackSrc="/placeholder.jpeg"
               />
             )}
           </figure>
