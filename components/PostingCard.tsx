@@ -5,11 +5,42 @@ import Rating from "./Rating";
 import ImageWithFallback from "./ImageWithFallback";
 import Image from "next/image";
 
-type Props = {
+type PostingCardProps = {
   room: Room & { images: RoomImage[] };
 };
 
-const PostingCard: React.FC<Props> = ({ room }) => {
+type BadgesProps = {
+  internet: boolean;
+  breakfast: boolean;
+  petsAllowed: boolean;
+  airconditioned: boolean;
+  roomCleaning: boolean;
+};
+
+const Badges: React.FC<BadgesProps> = ({
+  internet,
+  breakfast,
+  petsAllowed,
+  airconditioned,
+  roomCleaning,
+}) => (
+  <div className="min-h-[0.5rem] xs:min-h-[1rem] card-actions justify-end pb-4">
+    {/* TODO: add other badges here */}
+    {internet && <div className="badge badge-outline text-sm">Internet</div>}
+    {breakfast && <div className="badge badge-outline text-sm">Breakfast</div>}
+    {petsAllowed && (
+      <div className="badge badge-outline text-sm">Pets Allowed</div>
+    )}
+    {airconditioned && (
+      <div className="badge badge-outline text-sm">Air Conditioned</div>
+    )}
+    {roomCleaning && (
+      <div className="badge badge-outline text-sm">Room Cleaning</div>
+    )}
+  </div>
+);
+
+const PostingCard: React.FC<PostingCardProps> = ({ room }) => {
   return (
     <Link href={`/rooms/${room.id}`}>
       <a className="">
@@ -52,26 +83,13 @@ const PostingCard: React.FC<Props> = ({ room }) => {
               numberOfReviews={room.numOfReviews}
               readOnly={true}
             />
-            <div className="min-h-[0.5rem] xs:min-h-[1rem] card-actions justify-end">
-              {/* TODO: add other badges here */}
-              {room.internet && (
-                <div className="badge badge-outline text-xs">Internet</div>
-              )}
-              {room.breakfast && (
-                <div className="badge badge-outline text-xs">Breakfast</div>
-              )}
-              {room.petsAllowed && (
-                <div className="badge badge-outline text-xs">Pets Allowed</div>
-              )}
-              {room.airconditioned && (
-                <div className="badge badge-outline text-xs">
-                  Air Conditioned
-                </div>
-              )}
-              {room.roomCleaning && (
-                <div className="badge badge-outline text-xs">Room Cleaning</div>
-              )}
-            </div>
+            <Badges
+              internet={room.internet}
+              breakfast={room.breakfast}
+              airconditioned={room.airconditioned}
+              petsAllowed={room.petsAllowed}
+              roomCleaning={room.roomCleaning}
+            />
           </div>
         </div>
       </a>
