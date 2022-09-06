@@ -56,6 +56,7 @@ const ImageWithFallback: React.FC<Props> = ({
       className="object-scale-down"
       onError={handleError}
       onLoad={handlePossibleError}
+      unoptimized
     />
   );
 };
