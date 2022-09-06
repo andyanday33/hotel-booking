@@ -69,7 +69,7 @@ const RoomDetails: React.FC<RoomDetalsProps> = ({ room }) => {
         </div>
       </section>
       {room.images.length > 1 ? (
-        <Carousel images={room.images} />
+        <Carousel images={room.images} width={1000} height={1000} />
       ) : (
         <ImageWithFallback
           src={room?.images[0]?.url}

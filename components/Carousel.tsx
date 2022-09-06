@@ -4,14 +4,15 @@ import ImageWithFallback from "./ImageWithFallback";
 
 type Props = {
   images: RoomImage[];
+  width?: number;
+  height?: number;
 };
 
-const Carousel = ({ images }: Props) => {
-  console.log(images);
+const Carousel = ({ images, ...props }: Props) => {
+  console.log("carousel render"); // TODO: renders > 1 try to understand why
   return (
     <div className="carousel w-full">
       {images.map((image, i) => {
-        console.log("carousel ran");
         return (
           <div
             id={`slide${i}`}
@@ -22,6 +23,8 @@ const Carousel = ({ images }: Props) => {
             <ImageWithFallback
               src={image.url}
               fallBackSrc="/placeholder.jpeg"
+              layout="intrinsic"
+              {...props}
             />
             <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
               <a
