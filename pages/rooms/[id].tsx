@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Layout from "../../components/layout/Layout";
 import ImageWithFallback from "../../components/ImageWithFallback";
 import { Room, RoomImage } from "@prisma/client";
+import Carousel from "../../components/Carousel";
 
 type FeatureProps = {
   feature: string;
@@ -21,6 +22,7 @@ const FeatureIndicator: React.FC<FeatureProps> = ({ feature, exists }) => (
 );
 
 const RoomDetails: React.FC<RoomDetalsProps> = ({ room }) => {
+  console.log("roomImages", room.images);
   return (
     <>
       <section
@@ -66,14 +68,17 @@ const RoomDetails: React.FC<RoomDetalsProps> = ({ room }) => {
           </div>
         </div>
       </section>
-
-      <ImageWithFallback
-        src={room?.images[0]?.url}
-        fallBackSrc={"/placeholder.jpeg"}
-        layout="intrinsic"
-        width={1000}
-        height={1000}
-      />
+      {room.images.length > 1 ? (
+        <Carousel images={room.images} />
+      ) : (
+        <ImageWithFallback
+          src={room?.images[0]?.url}
+          fallBackSrc={"/placeholder.jpeg"}
+          layout="intrinsic"
+          width={1000}
+          height={1000}
+        />
+      )}
     </>
   );
 };
