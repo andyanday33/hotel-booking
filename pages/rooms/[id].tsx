@@ -109,7 +109,7 @@ const SingleRoom: NextPage = (props) => {
         <section className="grid grid-cols-1 gap-4 post-header sm:flex sm:justify-between">
           {/* TODO: add a spinner here */}
           {!room && !error && <p>Loading</p>}
-          {error && <p>Error: {error.message}</p>}
+          {error && !room && <p>Error: {error.message}</p>}
           {room && <RoomDetails room={room} />}
         </section>
         <section></section>
