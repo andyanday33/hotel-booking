@@ -116,6 +116,7 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
                 Room Category:{" "}
                 {room.category.charAt(0) + room.category.slice(1).toLowerCase()}
               </li>
+              <li>Guests: {room.guestCapacity}</li>
             </ul>
           </div>
         </div>
