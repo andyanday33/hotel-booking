@@ -44,14 +44,15 @@ const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
     setSelectionRange((prev) => {
       return { ...prev, ...ranges.selection };
     });
+
+    if (ranges.selection.endDate && ranges.selection.startDate) {
+      const diffTime = Math.abs(
+        +ranges.selection.endDate - +ranges.selection.startDate
+      );
+      setDays(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    }
   };
 
-  useEffect(() => {
-    const diffTime = Math.abs(
-      +selectionRange.endDate - +selectionRange.startDate
-    );
-    setDays(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-  }, [selectionRange.startDate, selectionRange.endDate]);
   return (
     <section className="date-picker mt-8 mb-4">
       {/* TODO: Disable reserved days */}
