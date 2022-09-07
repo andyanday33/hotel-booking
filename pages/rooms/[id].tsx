@@ -5,7 +5,7 @@ import Layout from "../../components/layout/Layout";
 import ImageWithFallback from "../../components/ImageWithFallback";
 import { Room, RoomImage } from "@prisma/client";
 import Carousel from "../../components/Carousel";
-import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import { DateRange, RangeKeyDict } from "react-date-range";
 
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
@@ -54,7 +54,11 @@ const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
   }, [selectionRange.startDate, selectionRange.endDate]);
   return (
     <section className="date-picker mt-8 mb-4">
-      <DateRangePicker ranges={[selectionRange]} onChange={handleSelect} />
+      <DateRange
+        ranges={[selectionRange]}
+        onChange={handleSelect}
+        minDate={new Date()}
+      />
       <p>Total: £{days * pricePerNight}</p>
       <button className="btn btn-primary">Reserve and Pay</button>
     </section>
