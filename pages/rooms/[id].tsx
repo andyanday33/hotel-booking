@@ -93,7 +93,7 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
         </div>
         <div className="room-features pt-4">
           <h2 className="text-xl mb-4">Room Features</h2>
-          <div className="container divide-x divide-gray-700 grid grid-cols-2">
+          <div className="container divide-x divide-gray-700 grid grid-cols-2 min-w-full">
             <ul>
               <FeatureIndicator feature="Breakfast" exists={room.breakfast} />
               <FeatureIndicator feature="Internet" exists={room.internet} />
