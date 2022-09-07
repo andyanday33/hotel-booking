@@ -17,6 +17,7 @@ const Rooms: NextPage = (props) => {
         {!data && error && <p>Error: {error.message}</p>}
         {data && data.map((room) => <PostingCard key={room.id} room={room} />)}
       </section>
+      {/* TODO: add pagination tomorrow */}
     </Layout>
   );
 };
