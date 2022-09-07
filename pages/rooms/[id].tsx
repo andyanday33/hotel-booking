@@ -54,6 +54,7 @@ const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
   }, [selectionRange.startDate, selectionRange.endDate]);
   return (
     <section className="date-picker mt-8 mb-4">
+      {/* TODO: Disable reserved days */}
       <DateRange
         ranges={[selectionRange]}
         onChange={handleSelect}
