@@ -5,14 +5,23 @@ import Layout from "../../components/layout/Layout";
 import ImageWithFallback from "../../components/ImageWithFallback";
 import { Room, RoomImage } from "@prisma/client";
 import Carousel from "../../components/Carousel";
+import { DateRangePicker, RangeKeyDict } from "react-date-range";
+
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { useEffect, useState } from "react";
 
 type FeatureProps = {
   feature: string;
   exists: boolean;
 };
 
-type RoomDetalsProps = {
+type RoomDetailsProps = {
   room: Room & { images: RoomImage[] };
+};
+
+type ReservationDatePickerProps = {
+  pricePerNight: number;
 };
 
 const FeatureIndicator: React.FC<FeatureProps> = ({ feature, exists }) => (
@@ -21,7 +30,38 @@ const FeatureIndicator: React.FC<FeatureProps> = ({ feature, exists }) => (
   </li>
 );
 
-const RoomDetails: React.FC<RoomDetalsProps> = ({ room }) => {
+const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
+  pricePerNight,
+}) => {
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
+  const [days, setDays] = useState(0);
+  const handleSelect = (ranges: RangeKeyDict) => {
+    console.log(ranges);
+    setSelectionRange((prev) => {
+      return { ...prev, ...ranges.selection };
+    });
+  };
+
+  useEffect(() => {
+    const diffTime = Math.abs(
+      +selectionRange.endDate - +selectionRange.startDate
+    );
+    setDays(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+  }, [selectionRange.startDate, selectionRange.endDate]);
+  return (
+    <section className="date-picker mt-8 mb-4">
+      <DateRangePicker ranges={[selectionRange]} onChange={handleSelect} />
+      <p>Total: £{days * pricePerNight}</p>
+      <button className="btn btn-primary">Reserve and Pay</button>
+    </section>
+  );
+};
+
+const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
   return (
     <>
       <section
@@ -65,6 +105,7 @@ const RoomDetails: React.FC<RoomDetalsProps> = ({ room }) => {
               </li>
             </ul>
           </div>
+          <ReservationDatePicker pricePerNight={room.pricePerNight} />
         </div>
       </section>
       {room.images.length > 1 ? (
