@@ -39,12 +39,14 @@ const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
     key: "selection",
   });
   const [days, setDays] = useState(0);
+
   const handleSelect = (ranges: RangeKeyDict) => {
-    console.log(ranges);
+    // Date selection range
     setSelectionRange((prev) => {
       return { ...prev, ...ranges.selection };
     });
 
+    // Calculate days
     if (ranges.selection.endDate && ranges.selection.startDate) {
       const diffTime = Math.abs(
         +ranges.selection.endDate - +ranges.selection.startDate
@@ -54,15 +56,20 @@ const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
   };
 
   return (
-    <section className="date-picker mt-8 mb-4">
+    <section className="date-picker mt-4 pt-4 mb-4 border-t-2 border-gray-700 lg:flex">
       {/* TODO: Disable reserved days */}
       <DateRange
         ranges={[selectionRange]}
         onChange={handleSelect}
         minDate={new Date()}
+        className="rounded-lg"
       />
-      <p>Total: £{days * pricePerNight}</p>
-      <button className="btn btn-primary">Reserve and Pay</button>
+      <div className="price-payment mt-2 lg:ml-2 lg:mt-auto">
+        <p>
+          Total: <strong>£{days * pricePerNight}</strong>
+        </p>
+        <button className="btn btn-primary mt-2">Reserve and Pay</button>
+      </div>
     </section>
   );
 };
@@ -71,7 +78,7 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
   return (
     <>
       <section
-        className="room-details text-center sm:text-start row-[2] mx-4 sm:mx-0 sm:max-w-[50%] mr-4
+        className="room-details text-center md:text-start row-[3] mx-4 md:mx-0 md:max-w-[50%] mr-4
   divide-y divide-gray-700"
       >
         <div className="room-header pb-4">
@@ -111,18 +118,18 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
               </li>
             </ul>
           </div>
-          <ReservationDatePicker pricePerNight={room.pricePerNight} />
         </div>
+        <ReservationDatePicker pricePerNight={room.pricePerNight} />
       </section>
       {room.images.length > 1 ? (
-        <Carousel images={room.images} width={1000} height={1000} />
+        <Carousel images={room.images} width={500} height={500} />
       ) : (
         <ImageWithFallback
           src={room?.images[0]?.url}
           fallBackSrc={"/placeholder.jpeg"}
           layout="intrinsic"
-          width={1000}
-          height={1000}
+          width={500}
+          height={500}
         />
       )}
     </>
@@ -152,8 +159,8 @@ const SingleRoom: NextPage = (props) => {
       {/* TODO: consider extracting layout
       TODO: pass down data as a prop if not initial request */}
 
-      <div className="grid border-b-2 border-gray-600 pb-2 sm:my-14 sm:mx-16">
-        <section className="grid grid-cols-1 gap-4 post-header sm:flex sm:justify-between">
+      <div className="grid border-b-2 border-gray-600 pb-2 md:my-14 md:mx-16">
+        <section className="grid grid-cols-1 gap-4 post-header md:flex md:justify-between">
           {/* TODO: add a spinner here */}
           {!room && !error && <p>Loading</p>}
           {error && !room && <p>Error: {error.message}</p>}

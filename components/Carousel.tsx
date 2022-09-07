@@ -16,7 +16,7 @@ const Carousel = ({ images, ...props }: Props) => {
           <div
             id={`slide${i}`}
             key={i}
-            className="carousel-item relative w-full"
+            className="carousel-item relative justify-center w-full"
           >
             {/* <img src="https://placeimg.com/800/200/arch" className="w-full" /> */}
             <ImageWithFallback
