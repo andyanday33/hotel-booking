@@ -35,14 +35,12 @@ const ImageWithFallback: React.FC<Props> = ({
 
   // Add placeholder image if the image has not been loaded properly
   const handleError = () => {
-    console.log("here x");
     setImgSource(fallBackSrc);
   };
 
   const handlePossibleError: ReactEventHandler<HTMLImageElement> = (e) => {
     // Add placeholder image if the image has not been loaded properly
     if (e.currentTarget.naturalWidth === 0) {
-      console.log("here");
       setImgSource(fallBackSrc);
     }
   };

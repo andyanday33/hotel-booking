@@ -9,7 +9,6 @@ type Props = {
 };
 
 const Carousel = ({ images, ...props }: Props) => {
-  console.log("carousel render"); // TODO: renders > 1 try to understand why
   return (
     <div className="carousel w-full">
       {images.map((image, i) => {

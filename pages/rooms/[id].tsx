@@ -22,7 +22,6 @@ const FeatureIndicator: React.FC<FeatureProps> = ({ feature, exists }) => (
 );
 
 const RoomDetails: React.FC<RoomDetalsProps> = ({ room }) => {
-  console.log("roomImages", room.images);
   return (
     <>
       <section
@@ -100,6 +99,7 @@ const SingleRoom: NextPage = (props) => {
     "room.getSingleRoom",
     { id: +id },
   ]);
+
   return (
     <Layout>
       {/* TODO: consider extracting layout
