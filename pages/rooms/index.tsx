@@ -12,6 +12,7 @@ import {
   useState,
 } from "react";
 import Modal from "../../components/Modal";
+import TagInput from "../../components/TagInput";
 
 type PaginationProps = {
   roomCount: number;
@@ -125,6 +126,16 @@ const Rooms: NextPage = (props) => {
               <option value="KING">King</option>
               <option value="SINGLE">Single</option>
             </Selection>
+            <TagInput
+              values={[
+                "breakfast",
+                "internet",
+                "air conditioning",
+                "room cleaning",
+                "pets allowed",
+              ]}
+              placeholder="Room Features (internet, breakfast, etc.)"
+            />
           </form>
         </Modal>
       </div>
