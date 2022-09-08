@@ -57,11 +57,11 @@ const Rooms: NextPage = (props) => {
       <h2 className="text-center text-gray-300 xs:text-start my-14 mx-[5%] text-4xl">
         All Stays
       </h2>
-      <div className="flex mb-8 flex-col mx-[10%] sm:mx-[5%] sm:flex-row gap-2">
+      <div className="flex mb-8 flex-col mx-[10%] xs:mx-[5%] xs:flex-row gap-2">
         <input
           type="text"
           placeholder="Search stays..."
-          className="input input-bordered input-secondary rounded-lg max-w-xs"
+          className="input input-bordered input-secondary rounded-lg"
         />
         <button className="btn btn-secondary">Search</button>
         <Modal />
