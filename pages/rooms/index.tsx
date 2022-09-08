@@ -119,8 +119,33 @@ const Rooms: NextPage = (props) => {
               placeholder="Enter Room Name..."
             />
             <InputGroup labelText="Address" placeholder="Enter Adress..." />
-            <InputGroup labelText="Minimum Price" type="number" textAfter="£" />
-            <InputGroup labelText="Maximum Price" type="number" textAfter="£" />
+            <InputGroup
+              labelText="Minimum Price"
+              placeholder="Enter Price..."
+              type="number"
+              textAfter="£"
+            />
+            <InputGroup
+              labelText="Maximum Price"
+              placeholder="Enter Price..."
+              type="number"
+              textAfter="£"
+            />
+            <InputGroup
+              labelText="Beds"
+              placeholder="Enter Number of Beds..."
+              type="number"
+            />
+            <InputGroup
+              labelText="Guests"
+              placeholder="Enter number of guests..."
+              type="number"
+            />
+            <InputGroup
+              labelText="Minimum Rating"
+              placeholder="Enter Minimum Rating..."
+              type="number"
+            />
             <Selection>
               <option value="TWINS">Twins</option>
               <option value="KING">King</option>
