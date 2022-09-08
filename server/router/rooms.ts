@@ -13,7 +13,7 @@ const ImageSchema = z.object({
   url: z.string(),
 });
 
-const RESULTS_PER_PAGE = 10;
+const RESULTS_PER_PAGE = 5;
 export const roomRouter = createRouter()
   .query("getAllRooms", {
     input: z.object({
@@ -46,21 +46,24 @@ export const roomRouter = createRouter()
             take: RESULTS_PER_PAGE,
           } as { skip?: number; take: number });
 
-      return prisma.room.findMany({
-        where: {
-          id: input.id,
-          name: {
-            contains: input.name, // replace null with undefined
+      return prisma.$transaction([
+        prisma.room.count(),
+        prisma.room.findMany({
+          where: {
+            id: input.id,
+            name: {
+              contains: input.name, // replace null with undefined
+            },
+            address: {
+              contains: input.location,
+            },
           },
-          address: {
-            contains: input.location,
+          include: {
+            images: true,
           },
-        },
-        include: {
-          images: true,
-        },
-        ...paginationOptions,
-      });
+          ...paginationOptions,
+        }),
+      ]);
     },
   })
   .query("getSingleRoom", {
