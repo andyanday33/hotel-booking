@@ -107,28 +107,31 @@ const Selection: React.FC<PropsWithChildren<SelectionProps>> = ({
   </div>
 );
 
-type AdvancedSearchProps = {};
+type CategoryType = "" | "TWINS" | "KING" | "SINGLE";
 
-const AdvancedSearch: React.FC = () => {
+type SearchParamsType = {
+  name?: string;
+  address?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  beds?: number;
+  guests?: number;
+  rating?: number;
+  category?: CategoryType;
+  features?: string[];
+  page?: number;
+};
+
+type AdvancedSearchProps = {
+  setSearchParams: Dispatch<SetStateAction<SearchParamsType>>;
+};
+
+const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
   const [tags, setTags] = useState<Tag[]>([]);
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
-
-    type CategoryType = "" | "TWINS" | "KING" | "SINGLE";
-
-    type SearchParamsType = {
-      name?: string;
-      address?: string;
-      minPrice?: number;
-      maxPrice?: number;
-      beds?: number;
-      guests?: number;
-      rating?: number;
-      category?: CategoryType;
-      features?: Tag[];
-    };
-
+    const features = tags.map((tag) => tag.text);
     const searchParams: SearchParamsType = {
       name: (document.getElementById("name-input") as HTMLInputElement).value,
       address: (document.getElementById("address-input") as HTMLInputElement)
@@ -147,11 +150,9 @@ const AdvancedSearch: React.FC = () => {
       category: (
         document.getElementById("category-selection") as HTMLSelectElement
       ).value as CategoryType,
-      features: tags,
+      features: features,
     };
-    console.log(searchParams);
-    // console.log(
-    //  ;
+    setSearchParams(searchParams);
   };
 
   return (
@@ -228,7 +229,8 @@ const AdvancedSearch: React.FC = () => {
 
 const Rooms: NextPage = (props) => {
   const [page, setPage] = useState(1);
-  const { data, error } = trpc.useQuery(["room.getAllRooms", { page }]);
+  const [searchParams, setSearchParams] = useState<SearchParamsType>({});
+  const { data, error } = trpc.useQuery(["room.getAllRooms", searchParams]);
 
   return (
     <Layout>
@@ -242,7 +244,7 @@ const Rooms: NextPage = (props) => {
           className="input input-bordered input-secondary rounded-lg"
         />
         <button className="btn btn-secondary">Search</button>
-        <AdvancedSearch />
+        <AdvancedSearch setSearchParams={setSearchParams} />
       </div>
 
       <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

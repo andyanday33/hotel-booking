@@ -19,21 +19,16 @@ export const roomRouter = createRouter()
     input: z.object({
       id: z.number().optional(),
       name: z.string().optional(),
-      location: z.string().optional(),
-      pricePerNight: z.string().optional(),
-      description: z.string().optional(),
+      address: z.string().optional(),
+      minPrice: z.number().optional(),
+      maxPrice: z.number().optional(),
+      beds: z.number().optional(),
+      guests: z.number().optional(),
+      minRating: z.number().optional(),
       guestCapacity: z.string().optional(),
       numOfBeds: z.string().optional(),
-      internet: z.string().optional(),
-      breakfast: z.string().optional(),
-      airconditioned: z.string().optional(),
-      petsAllowed: z.string().optional(),
-      roomCleaning: z.string().optional(),
-      ratings: z.string().optional(),
-      numOfReviews: z.string().optional(),
+      features: z.string().array().optional(),
       category: z.string().optional(),
-      creatorId: z.string().optional(),
-      createdAt: z.string().optional(),
       page: z.number().optional(),
     }),
     resolve({ input }) {
@@ -46,18 +41,27 @@ export const roomRouter = createRouter()
             take: RESULTS_PER_PAGE,
           } as { skip?: number; take: number });
 
-      return prisma.$transaction([
-        prisma.room.count(),
-        prisma.room.findMany({
-          where: {
-            id: input.id,
-            name: {
-              contains: input.name, // replace null with undefined
-            },
-            address: {
-              contains: input.location,
-            },
+      const queryOptions = {
+        where: {
+          id: input.id,
+          name: {
+            contains: input.name, // replace null with undefined
           },
+          address: {
+            contains: input.address,
+          },
+          pricePerNight: {
+            lte: input.maxPrice,
+            gte: input.minPrice,
+          },
+        },
+      };
+      return prisma.$transaction([
+        prisma.room.count({
+          ...queryOptions,
+        }),
+        prisma.room.findMany({
+          ...queryOptions,
           include: {
             images: true,
           },
