@@ -55,13 +55,6 @@ const Layout: React.FC<Props> = ({
                     <a>Hotel and Home Postings</a>
                   </Link>
                 </li>
-                <li>
-                  <input
-                    type="text"
-                    placeholder="Type here"
-                    className="input input-bordered input-secondary rounded-lg w-full max-w-xs"
-                  />
-                </li>
               </ul>
             </div>
           </nav>
@@ -70,24 +63,17 @@ const Layout: React.FC<Props> = ({
         </div>
         <aside className="drawer-side">
           <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
-          <ul className="menu p-4 overflow-y-auto w-80 bg-base-100">
+          <ul className="menu p-4 overflow-y-auto w-80 bg-gray-800 text-gray-300">
             {/* <!-- Sidebar content here --> */}
-            <li>
+            <li className="hover:bg-gray-700 rounded-lg duration-500 transition-colors">
               <Link href="/">
                 <a>Home</a>
               </Link>
             </li>
-            <li>
+            <li className="hover:bg-gray-700 rounded-lg duration-500 transition-colors">
               <Link href="/rooms">
                 <a>Hotel and Home Postings</a>
               </Link>
-            </li>
-            <li>
-              <input
-                type="text"
-                placeholder="Type here"
-                className="input input-bordered input-secondary w-full max-w-xs"
-              />
             </li>
           </ul>
         </aside>
