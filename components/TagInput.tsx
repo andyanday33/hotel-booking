@@ -1,12 +1,14 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { WithContext as ReactTags, Tag } from "react-tag-input";
 
 type Props = {
   values: string[];
   placeholder?: string;
+  tags: Tag[];
+  setTags: Dispatch<SetStateAction<Tag[]>>;
 };
 
-const TagInput: React.FC<Props> = ({ values, placeholder }) => {
+const TagInput: React.FC<Props> = ({ values, placeholder, tags, setTags }) => {
   const suggestions: Tag[] = values.map((value) => {
     return {
       id: value,
@@ -20,8 +22,6 @@ const TagInput: React.FC<Props> = ({ values, placeholder }) => {
   };
 
   const delimiters = [KeyCodes.comma, KeyCodes.enter];
-
-  const [tags, setTags] = React.useState<Tag[]>([]);
 
   const handleDelete = (i: number) => {
     setTags(tags.filter((tag, index) => index !== i));

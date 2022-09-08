@@ -8,22 +8,14 @@ const Modal: React.FC<PropsWithChildren<Props>> = ({ text, children }) => {
   return (
     <>
       {/* // <!-- The button to open modal --> */}
-      <label htmlFor="my-modal-6" className="btn modal-button">
+      <label htmlFor="my-modal-4" className="btn modal-button">
         {text}
       </label>
 
-      {/* // <!-- Put this part before </body> tag --> */}
-      <input type="checkbox" id="my-modal-6" className="modal-toggle" />
-      <div className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box">
-          {children}
-          <div className="modal-action">
-            <label htmlFor="my-modal-6" className="btn">
-              Yay!
-            </label>
-          </div>
-        </div>
-      </div>
+      <input type="checkbox" id="my-modal-4" className="modal-toggle" />
+      <label htmlFor="my-modal-4" className="modal cursor-pointer">
+        <label className="modal-box relative">{children}</label>
+      </label>
     </>
   );
 };

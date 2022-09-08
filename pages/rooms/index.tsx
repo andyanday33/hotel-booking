@@ -5,14 +5,17 @@ import Layout from "../../components/layout/Layout";
 import PostingCard from "../../components/PostingCard";
 import {
   Dispatch,
+  FormEventHandler,
   HTMLInputTypeAttribute,
   PropsWithChildren,
   SetStateAction,
   useCallback,
+  useEffect,
   useState,
 } from "react";
 import Modal from "../../components/Modal";
 import TagInput from "../../components/TagInput";
+import { Tag } from "react-tag-input";
 
 type PaginationProps = {
   roomCount: number;
@@ -62,6 +65,7 @@ type InputProps = {
   type?: HTMLInputTypeAttribute;
   placeholder?: string;
   textAfter?: string;
+  id?: string;
 };
 
 const InputGroup: React.FC<InputProps> = ({
@@ -69,6 +73,7 @@ const InputGroup: React.FC<InputProps> = ({
   type,
   placeholder,
   textAfter,
+  id,
 }) => (
   <div className="form-control my-2">
     <label className="input-group">
@@ -77,28 +82,154 @@ const InputGroup: React.FC<InputProps> = ({
         type={type || "text"}
         placeholder={placeholder}
         className="input input-bordered"
+        id={id}
       />
       {textAfter && <span>{textAfter}</span>}
     </label>
   </div>
 );
 
-type SelectionProps = {};
+type SelectionProps = {
+  id?: string;
+};
 
 const Selection: React.FC<PropsWithChildren<SelectionProps>> = ({
   children,
+  id,
 }) => (
   <div className="form-control my-2">
     <div className="input-group">
       <span>Room Category</span>
-      <select className="select select-bordered">{children}</select>
+      <select className="select select-bordered" id={id}>
+        {children}
+      </select>
     </div>
   </div>
 );
 
+type AdvancedSearchProps = {};
+
+const AdvancedSearch: React.FC = () => {
+  const [tags, setTags] = useState<Tag[]>([]);
+
+  const handleSubmit: FormEventHandler = (e) => {
+    e.preventDefault();
+
+    type CategoryType = "" | "TWINS" | "KING" | "SINGLE";
+
+    type SearchParamsType = {
+      name?: string;
+      address?: string;
+      minPrice?: number;
+      maxPrice?: number;
+      beds?: number;
+      guests?: number;
+      rating?: number;
+      category?: CategoryType;
+      features?: Tag[];
+    };
+
+    const searchParams: SearchParamsType = {
+      name: (document.getElementById("name-input") as HTMLInputElement).value,
+      address: (document.getElementById("address-input") as HTMLInputElement)
+        .value,
+      minPrice: +(
+        document.getElementById("min-price-input") as HTMLInputElement
+      ).value,
+      maxPrice: +(
+        document.getElementById("max-price-input") as HTMLInputElement
+      ).value,
+      beds: +(document.getElementById("bed-input") as HTMLInputElement).value,
+      guests: +(document.getElementById("guest-input") as HTMLInputElement)
+        .value,
+      rating: +(document.getElementById("rating-input") as HTMLInputElement)
+        .value,
+      category: (
+        document.getElementById("category-selection") as HTMLSelectElement
+      ).value as CategoryType,
+      features: tags,
+    };
+    console.log(searchParams);
+    // console.log(
+    //  ;
+  };
+
+  return (
+    <Modal text="Advanced Search">
+      <h3 className="text-xl">Advanced Search</h3>
+      <form className="mt-4 grid" onSubmit={handleSubmit}>
+        <InputGroup
+          labelText="Room Name"
+          placeholder="Enter Room Name..."
+          id="name-input"
+        />
+        <InputGroup
+          labelText="Address"
+          placeholder="Enter Adress..."
+          id="address-input"
+        />
+        <InputGroup
+          labelText="Minimum Price"
+          placeholder="Enter Price..."
+          type="number"
+          textAfter="£"
+          id="min-price-input"
+        />
+        <InputGroup
+          labelText="Maximum Price"
+          placeholder="Enter Price..."
+          type="number"
+          textAfter="£"
+          id="max-price-input"
+        />
+        <InputGroup
+          labelText="Beds"
+          placeholder="Enter Number of Beds..."
+          type="number"
+          id="bed-input"
+        />
+        <InputGroup
+          labelText="Guests"
+          placeholder="Enter number of guests..."
+          type="number"
+          id="guest-input"
+        />
+        <InputGroup
+          labelText="Minimum Rating"
+          placeholder="Enter Minimum Rating..."
+          type="number"
+          id="rating-input"
+        />
+        <Selection id="category-selection">
+          <option value="" defaultChecked>
+            Any
+          </option>
+          <option value="TWINS">Twins</option>
+          <option value="KING">King</option>
+          <option value="SINGLE">Single</option>
+        </Selection>
+        <TagInput
+          values={[
+            "breakfast",
+            "internet",
+            "air conditioning",
+            "room cleaning",
+            "pets allowed",
+          ]}
+          placeholder="Room Features (internet, breakfast, etc.)"
+          tags={tags}
+          setTags={setTags}
+        />
+        <button className="btn btn-secondary">Submit</button>
+      </form>
+    </Modal>
+  );
+};
+
 const Rooms: NextPage = (props) => {
   const [page, setPage] = useState(1);
   const { data, error } = trpc.useQuery(["room.getAllRooms", { page }]);
+
   return (
     <Layout>
       <h2 className="text-center text-gray-300 xs:text-start my-14 mx-[5%] text-4xl">
@@ -111,58 +242,7 @@ const Rooms: NextPage = (props) => {
           className="input input-bordered input-secondary rounded-lg"
         />
         <button className="btn btn-secondary">Search</button>
-        <Modal text="Advanced Search">
-          <h3 className="text-xl">Advanced Search</h3>
-          <form className="mt-4 grid">
-            <InputGroup
-              labelText="Room Name"
-              placeholder="Enter Room Name..."
-            />
-            <InputGroup labelText="Address" placeholder="Enter Adress..." />
-            <InputGroup
-              labelText="Minimum Price"
-              placeholder="Enter Price..."
-              type="number"
-              textAfter="£"
-            />
-            <InputGroup
-              labelText="Maximum Price"
-              placeholder="Enter Price..."
-              type="number"
-              textAfter="£"
-            />
-            <InputGroup
-              labelText="Beds"
-              placeholder="Enter Number of Beds..."
-              type="number"
-            />
-            <InputGroup
-              labelText="Guests"
-              placeholder="Enter number of guests..."
-              type="number"
-            />
-            <InputGroup
-              labelText="Minimum Rating"
-              placeholder="Enter Minimum Rating..."
-              type="number"
-            />
-            <Selection>
-              <option value="TWINS">Twins</option>
-              <option value="KING">King</option>
-              <option value="SINGLE">Single</option>
-            </Selection>
-            <TagInput
-              values={[
-                "breakfast",
-                "internet",
-                "air conditioning",
-                "room cleaning",
-                "pets allowed",
-              ]}
-              placeholder="Room Features (internet, breakfast, etc.)"
-            />
-          </form>
-        </Modal>
+        <AdvancedSearch />
       </div>
 
       <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
