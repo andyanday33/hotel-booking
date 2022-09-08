@@ -3,7 +3,14 @@ import Link from "next/link";
 import { trpc } from "../../utils/trpc";
 import Layout from "../../components/layout/Layout";
 import PostingCard from "../../components/PostingCard";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import {
+  Dispatch,
+  HTMLInputTypeAttribute,
+  PropsWithChildren,
+  SetStateAction,
+  useCallback,
+  useState,
+} from "react";
 import Modal from "../../components/Modal";
 
 type PaginationProps = {
@@ -49,6 +56,45 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
+type InputProps = {
+  labelText: string;
+  type?: HTMLInputTypeAttribute;
+  placeholder?: string;
+  textAfter?: string;
+};
+
+const InputGroup: React.FC<InputProps> = ({
+  labelText,
+  type,
+  placeholder,
+  textAfter,
+}) => (
+  <div className="form-control my-2">
+    <label className="input-group">
+      <span>{labelText}</span>
+      <input
+        type={type || "text"}
+        placeholder={placeholder}
+        className="input input-bordered"
+      />
+      {textAfter && <span>{textAfter}</span>}
+    </label>
+  </div>
+);
+
+type SelectionProps = {};
+
+const Selection: React.FC<PropsWithChildren<SelectionProps>> = ({
+  children,
+}) => (
+  <div className="form-control my-2">
+    <div className="input-group">
+      <span>Room Category</span>
+      <select className="select select-bordered">{children}</select>
+    </div>
+  </div>
+);
+
 const Rooms: NextPage = (props) => {
   const [page, setPage] = useState(1);
   const { data, error } = trpc.useQuery(["room.getAllRooms", { page }]);
@@ -64,7 +110,23 @@ const Rooms: NextPage = (props) => {
           className="input input-bordered input-secondary rounded-lg"
         />
         <button className="btn btn-secondary">Search</button>
-        <Modal />
+        <Modal text="Advanced Search">
+          <h3 className="text-xl">Advanced Search</h3>
+          <form className="mt-4 grid">
+            <InputGroup
+              labelText="Room Name"
+              placeholder="Enter Room Name..."
+            />
+            <InputGroup labelText="Address" placeholder="Enter Adress..." />
+            <InputGroup labelText="Minimum Price" type="number" textAfter="£" />
+            <InputGroup labelText="Maximum Price" type="number" textAfter="£" />
+            <Selection>
+              <option value="TWINS">Twins</option>
+              <option value="KING">King</option>
+              <option value="SINGLE">Single</option>
+            </Selection>
+          </form>
+        </Modal>
       </div>
 
       <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
