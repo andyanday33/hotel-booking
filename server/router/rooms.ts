@@ -17,7 +17,6 @@ const RESULTS_PER_PAGE = 5;
 export const roomRouter = createRouter()
   .query("getAllRooms", {
     input: z.object({
-      id: z.number().optional(),
       name: z.string().optional(),
       address: z.string().optional(),
       minPrice: z.number().optional(),
@@ -43,16 +42,18 @@ export const roomRouter = createRouter()
 
       const queryOptions = {
         where: {
-          id: input.id,
           name: {
-            contains: input.name, // replace null with undefined
+            contains: input?.name, // replace null with undefined
           },
           address: {
-            contains: input.address,
+            contains: input?.address,
           },
           pricePerNight: {
-            lte: input.maxPrice,
-            gte: input.minPrice,
+            lte: input?.maxPrice,
+            gte: input?.minPrice,
+          },
+          numOfBeds: {
+            gte: input?.beds,
           },
         },
       };
