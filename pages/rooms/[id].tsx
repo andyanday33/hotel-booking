@@ -9,7 +9,7 @@ import { DateRange, RangeKeyDict } from "react-date-range";
 
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type FeatureProps = {
   feature: string;
@@ -160,7 +160,7 @@ const SingleRoom: NextPage = (props) => {
       {/* TODO: consider extracting layout
       TODO: pass down data as a prop if not initial request */}
 
-      <div className="grid border-b-2 border-gray-600 pb-2 md:my-14 md:mx-16">
+      <div className="grid border-b-2 text-gray-300 border-gray-600 pb-2 md:my-14 md:mx-16">
         <section className="grid grid-cols-1 gap-4 post-header md:flex md:justify-between">
           {/* TODO: add a spinner here */}
           {!room && !error && <p>Loading</p>}

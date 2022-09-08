@@ -53,7 +53,7 @@ const Rooms: NextPage = (props) => {
   const { data, error } = trpc.useQuery(["room.getAllRooms", { page }]);
   return (
     <Layout>
-      <h2 className="text-center xs:text-start my-14 mx-[5%] text-4xl">
+      <h2 className="text-center text-gray-300 xs:text-start my-14 mx-[5%] text-4xl">
         All Stays
       </h2>
       <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

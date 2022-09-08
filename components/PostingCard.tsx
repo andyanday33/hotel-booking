@@ -44,7 +44,7 @@ const PostingCard: React.FC<PostingCardProps> = ({ room }) => {
   return (
     <Link href={`/rooms/${room.id}`}>
       <a className="">
-        <div className="card border-2 border-gray-600 bg-base-100 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
+        <div className="card border-2 border-gray-600 bg-gray-800 text-gray-300 h-full shadow-xl motion-safe:hover:scale-105 duration-500">
           <div className="container min-h-[30%] max-h-[60%] md:h-[40%]">
             <figure className="flex h-full">
               {/* There are images for this room */}
