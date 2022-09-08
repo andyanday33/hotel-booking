@@ -55,6 +55,13 @@ const Layout: React.FC<Props> = ({
                     <a>Hotel and Home Postings</a>
                   </Link>
                 </li>
+                <li>
+                  <input
+                    type="text"
+                    placeholder="Type here"
+                    className="input input-bordered input-secondary rounded-lg w-full max-w-xs"
+                  />
+                </li>
               </ul>
             </div>
           </nav>
@@ -74,6 +81,13 @@ const Layout: React.FC<Props> = ({
               <Link href="/rooms">
                 <a>Hotel and Home Postings</a>
               </Link>
+            </li>
+            <li>
+              <input
+                type="text"
+                placeholder="Type here"
+                className="input input-bordered input-secondary w-full max-w-xs"
+              />
             </li>
           </ul>
         </aside>

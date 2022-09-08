@@ -4,6 +4,7 @@ import { trpc } from "../../utils/trpc";
 import Layout from "../../components/layout/Layout";
 import PostingCard from "../../components/PostingCard";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import Modal from "../../components/Modal";
 
 type PaginationProps = {
   roomCount: number;
@@ -56,6 +57,16 @@ const Rooms: NextPage = (props) => {
       <h2 className="text-center text-gray-300 xs:text-start my-14 mx-[5%] text-4xl">
         All Stays
       </h2>
+      <div className="flex mb-8 flex-col mx-[10%] sm:mx-[5%] sm:flex-row gap-2">
+        <input
+          type="text"
+          placeholder="Search stays..."
+          className="input input-bordered input-secondary rounded-lg max-w-xs"
+        />
+        <button className="btn btn-secondary">Search</button>
+        <Modal />
+      </div>
+
       <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {/* TODO: add a spinner here */}
         {!data && !error && <p>Loading</p>}
