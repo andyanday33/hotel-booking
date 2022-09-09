@@ -127,9 +127,13 @@ type SearchParamsType = {
 
 type AdvancedSearchProps = {
   setSearchParams: Dispatch<SetStateAction<SearchParamsType>>;
+  setShowClearFilters: Dispatch<SetStateAction<boolean>>;
 };
 
-const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
+const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
+  setSearchParams,
+  setShowClearFilters,
+}) => {
   const [tags, setTags] = useState<Tag[]>([]);
 
   const handleSubmit: FormEventHandler = (e) => {
@@ -170,6 +174,8 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
     (document.getElementById("category-selection") as HTMLSelectElement).value =
       "";
     setTags([]);
+    // Allow users to clear filters
+    setShowClearFilters(true);
   };
 
   return (
@@ -250,6 +256,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
 
 const Rooms: NextPage = (props) => {
   const [searchParams, setSearchParams] = useState<SearchParamsType>({});
+  const [showClearFilters, setShowClearFilters] = useState(false);
   const { data, error } = trpc.useQuery(["room.getAllRooms", searchParams]);
   {
     /* TODO: Add a clear search params link */
@@ -266,7 +273,20 @@ const Rooms: NextPage = (props) => {
           className="input input-bordered input-secondary rounded-lg"
         />
         <button className="btn btn-secondary">Search</button>
-        <AdvancedSearch setSearchParams={setSearchParams} />
+        <AdvancedSearch
+          setSearchParams={setSearchParams}
+          setShowClearFilters={setShowClearFilters}
+        />
+        {showClearFilters && (
+          <button
+            onClick={() => {
+              setSearchParams({}), setShowClearFilters(false);
+            }}
+            className="btn btn-outline border-gray-300 text-gray-300 hover:bg-gray-300 hover:text-black"
+          >
+            Clear Filters
+          </button>
+        )}
       </div>
 
       <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
