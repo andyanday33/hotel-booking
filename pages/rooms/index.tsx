@@ -134,6 +134,8 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
+
+    // Create search params for querying db
     const features = tags.map((tag) => tag.text);
     const searchParams: SearchParamsType = {
       name: (document.getElementById("name-input") as HTMLInputElement).value,
@@ -156,6 +158,18 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
       features: features,
     };
     setSearchParams(searchParams);
+
+    // Reset modal state
+    (document.getElementById("name-input") as HTMLInputElement).value = "";
+    (document.getElementById("address-input") as HTMLInputElement).value = "";
+    (document.getElementById("min-price-input") as HTMLInputElement).value = "";
+    (document.getElementById("max-price-input") as HTMLInputElement).value = "";
+    (document.getElementById("bed-input") as HTMLInputElement).value = "";
+    (document.getElementById("guest-input") as HTMLInputElement).value = "";
+    (document.getElementById("rating-input") as HTMLInputElement).value = "";
+    (document.getElementById("category-selection") as HTMLSelectElement).value =
+      "";
+    setTags([]);
   };
 
   return (
@@ -224,7 +238,11 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
           tags={tags}
           setTags={setTags}
         />
-        <button className="btn btn-secondary">Submit</button>
+        <button className="w-full">
+          <label htmlFor="my-modal-4" className="btn btn-secondary w-full">
+            Submit
+          </label>
+        </button>
       </form>
     </Modal>
   );
