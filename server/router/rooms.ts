@@ -88,13 +88,6 @@ export const roomRouter = createRouter()
         },
       };
 
-      // type FeatureType = "internet" | "breakfast";
-      // const features = input.features as FeatureType[];
-      // features?.map((feature) => {
-      //   console.log(feature);
-      //   queryOptions[feature].equals = true;
-      // });
-
       return prisma.$transaction([
         prisma.room.count({
           ...queryOptions,
