@@ -5,8 +5,15 @@ import Rating from "./Rating";
 import ImageWithFallback from "./ImageWithFallback";
 import Image from "next/image";
 
+type RoomPostingKeys =
+  | "description"
+  | "guestCapacity"
+  | "numOfBeds"
+  | "category"
+  | "creatorId"
+  | "createdAt";
 type PostingCardProps = {
-  room: Room & { images: RoomImage[] };
+  room: Omit<Room, RoomPostingKeys> & { images: RoomImage[] };
 };
 
 type BadgesProps = {

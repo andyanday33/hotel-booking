@@ -261,7 +261,7 @@ const Rooms: NextPage = (props) => {
           <Pagination
             roomCount={data[0]}
             roomsPerPage={5}
-            page={searchParams.page}
+            page={searchParams.page || 1}
             setPage={setSearchParams}
             className="mx-auto"
           />

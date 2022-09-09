@@ -94,7 +94,19 @@ export const roomRouter = createRouter()
         }),
         prisma.room.findMany({
           ...queryOptions,
-          include: {
+          select: {
+            id: true,
+            name: true,
+            ratings: true,
+            reviews: true,
+            numOfReviews: true,
+            address: true,
+            breakfast: true,
+            pricePerNight: true,
+            internet: true,
+            airconditioned: true,
+            petsAllowed: true,
+            roomCleaning: true,
             images: true,
           },
           ...paginationOptions,
