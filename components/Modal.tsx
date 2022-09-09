@@ -8,7 +8,10 @@ const Modal: React.FC<PropsWithChildren<Props>> = ({ text, children }) => {
   return (
     <>
       {/* // <!-- The button to open modal --> */}
-      <label htmlFor="my-modal-4" className="btn modal-button">
+      <label
+        htmlFor="my-modal-4"
+        className="btn modal-button xs:btn-sm sm:btn-md"
+      >
         {text}
       </label>
 

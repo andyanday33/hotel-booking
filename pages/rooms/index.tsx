@@ -274,14 +274,19 @@ const Rooms: NextPage = (props) => {
         {showClearFilters ? "Search Results " : "All Stays"}
       </h2>
       <div className="flex mb-8 flex-col mx-[10%] xs:mx-[5%] xs:flex-row gap-2">
-        <form onSubmit={handleNormalSearch} className="gap-2">
+        <form
+          onSubmit={handleNormalSearch}
+          className="flex flex-col gap-2 xs:flex-row"
+        >
           <input
             type="text"
             id="normal-search-input"
             placeholder="Search stays..."
-            className="input input-bordered input-secondary rounded-lg"
+            className="input input-bordered input-secondary rounded-lg xs:input-sm sm:input-md"
           />
-          <button className="btn btn-secondary">Search</button>
+          <button className="btn btn-secondary xs:btn-sm sm:btn-md">
+            Search
+          </button>
         </form>
 
         <AdvancedSearch
@@ -293,7 +298,7 @@ const Rooms: NextPage = (props) => {
             onClick={() => {
               setSearchParams({}), setShowClearFilters(false);
             }}
-            className="btn btn-outline border-gray-300 text-gray-300 hover:bg-gray-300 hover:text-black"
+            className="btn btn-outline xs:btn-sm sm:btn-md border-gray-300 text-gray-300 hover:bg-gray-300 hover:text-black"
           >
             Clear Filters
           </button>
