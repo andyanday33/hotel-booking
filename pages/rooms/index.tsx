@@ -258,21 +258,32 @@ const Rooms: NextPage = (props) => {
   const [searchParams, setSearchParams] = useState<SearchParamsType>({});
   const [showClearFilters, setShowClearFilters] = useState(false);
   const { data, error } = trpc.useQuery(["room.getAllRooms", searchParams]);
-  {
-    /* TODO: Add a clear search params link */
-  }
+
+  const handleNormalSearch: FormEventHandler = (e) => {
+    e.preventDefault();
+    const name = (
+      document.getElementById("normal-search-input") as HTMLInputElement
+    ).value;
+    setSearchParams({ name });
+    setShowClearFilters(true);
+  };
+
   return (
     <Layout>
       <h2 className="text-center text-gray-300 xs:text-start my-14 mx-[5%] text-4xl">
         {showClearFilters ? "Search Results " : "All Stays"}
       </h2>
       <div className="flex mb-8 flex-col mx-[10%] xs:mx-[5%] xs:flex-row gap-2">
-        <input
-          type="text"
-          placeholder="Search stays..."
-          className="input input-bordered input-secondary rounded-lg"
-        />
-        <button className="btn btn-secondary">Search</button>
+        <form onSubmit={handleNormalSearch} className="gap-2">
+          <input
+            type="text"
+            id="normal-search-input"
+            placeholder="Search stays..."
+            className="input input-bordered input-secondary rounded-lg"
+          />
+          <button className="btn btn-secondary">Search</button>
+        </form>
+
         <AdvancedSearch
           setSearchParams={setSearchParams}
           setShowClearFilters={setShowClearFilters}
