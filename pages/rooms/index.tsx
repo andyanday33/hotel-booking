@@ -264,7 +264,7 @@ const Rooms: NextPage = (props) => {
   return (
     <Layout>
       <h2 className="text-center text-gray-300 xs:text-start my-14 mx-[5%] text-4xl">
-        All Stays
+        {showClearFilters ? "Search Results " : "All Stays"}
       </h2>
       <div className="flex mb-8 flex-col mx-[10%] xs:mx-[5%] xs:flex-row gap-2">
         <input
