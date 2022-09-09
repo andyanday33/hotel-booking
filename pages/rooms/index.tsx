@@ -10,7 +10,6 @@ import {
   PropsWithChildren,
   SetStateAction,
   useCallback,
-  useEffect,
   useState,
 } from "react";
 import Modal from "../../components/Modal";
@@ -21,22 +20,26 @@ type PaginationProps = {
   roomCount: number;
   roomsPerPage: number;
   page: number;
-  setPage: Dispatch<SetStateAction<number>>;
+  setPage: Dispatch<SetStateAction<SearchParamsType>>;
   className: string;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
   roomCount,
   roomsPerPage,
-  page,
+  page = 1,
   setPage,
   className,
 }) => {
   const handlePrevPage = useCallback(() => {
-    setPage((prev) => prev - 1);
+    setPage((prev) => {
+      return { ...prev, page: page - 1 };
+    });
   }, []);
   const handleNextPage = useCallback(() => {
-    setPage((prev) => prev + 1);
+    setPage((prev) => {
+      return { ...prev, page: page + 1 };
+    });
   }, []);
   const nextPageExists = roomCount - roomsPerPage * page > 0;
   return (
@@ -228,7 +231,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
 };
 
 const Rooms: NextPage = (props) => {
-  const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useState<SearchParamsType>({});
   const { data, error } = trpc.useQuery(["room.getAllRooms", searchParams]);
 
@@ -259,8 +261,8 @@ const Rooms: NextPage = (props) => {
           <Pagination
             roomCount={data[0]}
             roomsPerPage={5}
-            page={page}
-            setPage={setPage}
+            page={searchParams.page}
+            setPage={setSearchParams}
             className="mx-auto"
           />
         )}
