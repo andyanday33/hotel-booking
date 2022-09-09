@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
-import { z } from "zod";
+import { number, z } from "zod";
 import { prisma } from "../prisma";
 
 const createRouter = () => {
@@ -49,11 +49,17 @@ export const roomRouter = createRouter()
             contains: input?.address,
           },
           pricePerNight: {
-            lte: input?.maxPrice,
+            lte: input?.maxPrice || Number.MAX_VALUE,
             gte: input?.minPrice,
           },
           numOfBeds: {
             gte: input?.beds,
+          },
+          guestCapacity: {
+            gte: input?.guests,
+          },
+          ratings: {
+            gte: input?.minRating,
           },
         },
       };
