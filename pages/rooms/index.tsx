@@ -251,7 +251,9 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ setSearchParams }) => {
 const Rooms: NextPage = (props) => {
   const [searchParams, setSearchParams] = useState<SearchParamsType>({});
   const { data, error } = trpc.useQuery(["room.getAllRooms", searchParams]);
-
+  {
+    /* TODO: Add a clear search params link */
+  }
   return (
     <Layout>
       <h2 className="text-center text-gray-300 xs:text-start my-14 mx-[5%] text-4xl">
