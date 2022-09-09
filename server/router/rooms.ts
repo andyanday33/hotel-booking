@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
+import { features } from "process";
 import { number, z } from "zod";
 import { prisma } from "../prisma";
 
@@ -27,7 +28,7 @@ export const roomRouter = createRouter()
       guestCapacity: z.string().optional(),
       numOfBeds: z.string().optional(),
       features: z.string().array().optional(),
-      category: z.string().optional(),
+      category: z.enum(["KING", "TWINS", "SINGLE", ""]).optional(),
       page: z.number().optional(),
     }),
     resolve({ input }) {
@@ -39,6 +40,10 @@ export const roomRouter = createRouter()
         : ({
             take: RESULTS_PER_PAGE,
           } as { skip?: number; take: number });
+
+      type categoryType = "KING" | "TWINS" | "SINGLE";
+
+      const features = new Set(input.features);
 
       const queryOptions = {
         where: {
@@ -61,8 +66,35 @@ export const roomRouter = createRouter()
           ratings: {
             gte: input?.minRating,
           },
+          category:
+            input?.category === ""
+              ? undefined
+              : (input.category as categoryType),
+          breakfast: {
+            equals: features.has("breakfast") ? true : undefined,
+          },
+          internet: {
+            equals: features.has("internet") ? true : undefined,
+          },
+          airconditioned: {
+            equals: features.has("air conditioning") ? true : undefined,
+          },
+          petsAllowed: {
+            equals: features.has("pets allowed") ? true : undefined,
+          },
+          roomCleaning: {
+            equals: features.has("room cleaning") ? true : undefined,
+          },
         },
       };
+
+      // type FeatureType = "internet" | "breakfast";
+      // const features = input.features as FeatureType[];
+      // features?.map((feature) => {
+      //   console.log(feature);
+      //   queryOptions[feature].equals = true;
+      // });
+
       return prisma.$transaction([
         prisma.room.count({
           ...queryOptions,
