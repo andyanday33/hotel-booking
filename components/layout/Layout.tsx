@@ -2,10 +2,35 @@ import React from "react";
 import Footer from "./Footer";
 import Link from "next/link";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
 
 type Props = {
   children?: React.ReactNode;
   title?: string;
+};
+
+const ProfileComponent = () => {
+  const { data: session, status } = useSession();
+  return (
+    <>
+      {status === "authenticated" ? (
+        <>
+          <li className="self-center">Signed in as {session.user?.name}</li>
+          <li>
+            <Link href="api/auth/signout">
+              <a>Sign Out</a>
+            </Link>
+          </li>
+        </>
+      ) : (
+        <li>
+          <Link href="/api/auth/signin">
+            <a>Sign In</a>
+          </Link>
+        </li>
+      )}
+    </>
+  );
 };
 
 const Layout: React.FC<Props> = ({
@@ -55,6 +80,7 @@ const Layout: React.FC<Props> = ({
                     <a>Hotel and Home Postings</a>
                   </Link>
                 </li>
+                <ProfileComponent />
               </ul>
             </div>
           </nav>
