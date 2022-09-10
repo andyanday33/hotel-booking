@@ -3,7 +3,7 @@ import { signIn } from "next-auth/react";
 import Layout from "../../components/layout/Layout";
 
 type Props = {};
-
+// TODO: add redirect to home page if user is already signed in
 const Signin = (props: Props) => {
   return (
     <Layout>
@@ -25,7 +25,9 @@ const Signin = (props: Props) => {
           <div className="divider">
             <p>or</p>
           </div>
-          <button className="btn btn-gray-700">Sign in with Github</button>
+          <button className="btn btn-gray-700" onClick={() => signIn("github")}>
+            Sign in with Github
+          </button>
         </section>
       </div>
     </Layout>
