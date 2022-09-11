@@ -2,7 +2,7 @@ import React from "react";
 import Footer from "./Footer";
 import Link from "next/link";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 type Props = {
   children?: React.ReactNode;
@@ -26,9 +26,7 @@ const ProfileComponent: React.FC<ProfileComponentProps> = ({ classNames }) => {
             Signed in as {session.user?.name}
           </li>
           <li className={`${classNames?.button}`}>
-            <Link href="api/auth/signout">
-              <a>Sign Out</a>
-            </Link>
+            <button onClick={() => signOut()}>Sign Out</button>
           </li>
         </>
       ) : (
