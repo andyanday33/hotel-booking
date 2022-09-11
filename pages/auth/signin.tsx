@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import Layout from "../../components/layout/Layout";
 import { useRouter } from "next/router";
 
 type Props = {};
+
+type ButtonProps = {
+  providerText: string;
+  provider: string;
+};
+
+const ButtonWithLoadingState: React.FC<ButtonProps> = ({
+  providerText,
+  provider,
+}) => {
+  const [loading, setLoading] = useState(false);
+  return (
+    <button
+      className={`btn btn-gray-700 ${loading && "loading"}`}
+      onClick={() => {
+        setLoading(true);
+        signIn(provider);
+      }}
+    >
+      Sign in with {providerText}
+    </button>
+  );
+};
 
 const Signin = (props: Props) => {
   const { data, status } = useSession();
@@ -48,9 +71,7 @@ const Signin = (props: Props) => {
           <div className="divider">
             <p>or</p>
           </div>
-          <button className="btn btn-gray-700" onClick={() => signIn("github")}>
-            Sign in with Github
-          </button>
+          <ButtonWithLoadingState providerText="GitHub" provider="github" />
         </section>
       </div>
     </Layout>
