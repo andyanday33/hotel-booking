@@ -4,10 +4,10 @@ import * as trpcNext from "@trpc/server/adapters/next";
 import { features } from "process";
 import { number, z } from "zod";
 import { prisma } from "../prisma";
-
-const createRouter = () => {
-  return trpc.router();
-};
+import { createRouter } from "./context";
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import { TRPCError } from "@trpc/server";
 
 const ImageSchema = z.object({
   publicId: z.string(),
@@ -31,7 +31,7 @@ export const roomRouter = createRouter()
       category: z.enum(["KING", "TWINS", "SINGLE", ""]).optional(),
       page: z.number().optional(),
     }),
-    resolve({ input }) {
+    resolve({ ctx, input }) {
       const paginationOptions = input.page
         ? {
             skip: (input.page - 1) * RESULTS_PER_PAGE,
