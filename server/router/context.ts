@@ -5,12 +5,8 @@ import { authOptions } from "../../pages/api/auth/[...nextauth]";
 
 // The app's context - is generated for each incoming request
 export async function createContext(opts?: trpcNext.CreateNextContextOptions) {
-  // Create your context based on the request object
-  // Will be available as `ctx` in all your resolvers
-
-  // This is just an example of something you'd might want to do in your ctx fn
   async function getSessionFromHeader() {
-    // const user = await decodeJwtToken(req.headers.authorization.split(' ')[1])
+    // TODO: get users from database, make available in context
     if (opts?.req.cookies) {
       console.log("req alo", opts?.req.headers);
       const session = await unstable_getServerSession(
