@@ -1,10 +1,33 @@
 import React from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Layout from "../../components/layout/Layout";
+import { useRouter } from "next/router";
 
 type Props = {};
-// TODO: add redirect to home page if user is already signed in
+
 const Signin = (props: Props) => {
+  const { data, status } = useSession();
+  const router = useRouter();
+
+  if (status === "authenticated") {
+    router.push("/");
+    return (
+      <Layout>
+        <h1>Already signed in</h1>
+        <p>Redirecting...</p>
+      </Layout>
+    );
+  }
+
+  if (status === "loading") {
+    // TODO: Add loading spinner
+    return (
+      <Layout>
+        <h1 className="text-white">Loading...</h1>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="bg-gray-200 flex flex-col mx-[10%] mt-[5%] sm:mx-[25%] md:mx-[30%] xl:mx-[35%] rounded-lg px-8 gap-2 py-4">
