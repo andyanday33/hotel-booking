@@ -15,6 +15,7 @@ import {
 import Modal from "../../components/Modal";
 import TagInput from "../../components/TagInput";
 import { Tag } from "react-tag-input";
+import { HashLoader } from "react-spinners";
 
 type PaginationProps = {
   roomCount: number;
@@ -305,24 +306,30 @@ const Rooms: NextPage = (props) => {
         )}
       </div>
 
-      <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {/* TODO: add a spinner here */}
-        {!data && !error && <p>Loading</p>}
-        {!data && error && <p>Error: {error.message}</p>}
-        {data &&
-          data[1].map((room) => <PostingCard key={room.id} room={room} />)}
-      </section>
-      <div className="flex mb-8">
-        {data && (
-          <Pagination
-            roomCount={data[0]}
-            roomsPerPage={5}
-            page={searchParams.page || 1}
-            setPage={setSearchParams}
-            className="mx-auto"
-          />
-        )}
-      </div>
+      {!data && !error && (
+        <div className="min-w-full min-h-full flex">
+          <HashLoader color="#ffffff" className="mx-auto my-auto" />
+        </div>
+      )}
+      {!data && error && <p>Error: {error.message}</p>}
+      {data && (
+        <>
+          <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {data[1].map((room) => (
+              <PostingCard key={room.id} room={room} />
+            ))}
+          </section>
+          <div className="flex mb-8">
+            <Pagination
+              roomCount={data[0]}
+              roomsPerPage={5}
+              page={searchParams.page || 1}
+              setPage={setSearchParams}
+              className="mx-auto"
+            />
+          </div>
+        </>
+      )}
     </Layout>
   );
 };

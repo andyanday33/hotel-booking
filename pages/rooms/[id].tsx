@@ -10,6 +10,7 @@ import { DateRange, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { useState } from "react";
+import { HashLoader } from "react-spinners";
 
 type FeatureProps = {
   feature: string;
@@ -160,15 +161,22 @@ const SingleRoom: NextPage = (props) => {
       {/* TODO: consider extracting layout
       TODO: pass down data as a prop if not initial request */}
 
-      <div className="grid border-b-2 text-gray-300 border-gray-600 pb-2 md:my-14 md:mx-16">
-        <section className="grid grid-cols-1 gap-4 post-header md:flex md:justify-between">
-          {/* TODO: add a spinner here */}
-          {!room && !error && <p>Loading</p>}
-          {error && !room && <p>Error: {error.message}</p>}
-          {room && <RoomDetails room={room} />}
-        </section>
-        <section></section>
-      </div>
+      {!room && !error && (
+        <div className="min-w-screen min-h-screen flex">
+          <HashLoader color="#fffffff" className="my-auto mx-auto" />
+        </div>
+      )}
+      {error && !room && <p>Error: {error.message}</p>}
+      {room && (
+        <div className="grid border-b-2 text-gray-300 border-gray-600 pb-2 md:my-14 md:mx-16">
+          <section className="grid grid-cols-1 gap-4 post-header md:flex md:justify-between">
+            {/* TODO: add a spinner here */}
+
+            <RoomDetails room={room} />
+          </section>
+          <section></section>
+        </div>
+      )}
     </Layout>
   );
 };

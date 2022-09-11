@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { CSSProperties, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import Layout from "../../components/layout/Layout";
 import { useRouter } from "next/router";
+import { HashLoader } from "react-spinners";
 
 type Props = {};
 
@@ -43,10 +44,11 @@ const Signin = (props: Props) => {
   }
 
   if (status === "loading") {
-    // TODO: Add loading spinner
     return (
       <Layout>
-        <h1 className="text-white">Loading...</h1>
+        <div className="min-w-screen min-h-screen flex">
+          <HashLoader color="#fffffff" className="my-auto mx-auto" />
+        </div>
       </Layout>
     );
   }
