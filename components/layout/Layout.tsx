@@ -9,21 +9,30 @@ type Props = {
   title?: string;
 };
 
-const ProfileComponent = () => {
+type ProfileComponentProps = {
+  classNames?: {
+    label?: string;
+    button?: string;
+  };
+};
+
+const ProfileComponent: React.FC<ProfileComponentProps> = ({ classNames }) => {
   const { data: session, status } = useSession();
   return (
     <>
       {status === "authenticated" ? (
         <>
-          <li className="self-center">Signed in as {session.user?.name}</li>
-          <li>
+          <li className={`self-center ${classNames?.label}`}>
+            Signed in as {session.user?.name}
+          </li>
+          <li className={`${classNames?.button}`}>
             <Link href="api/auth/signout">
               <a>Sign Out</a>
             </Link>
           </li>
         </>
       ) : (
-        <li>
+        <li className={`${classNames?.button}`}>
           <Link href="/api/auth/signin">
             <a>Sign In</a>
           </Link>
@@ -101,6 +110,13 @@ const Layout: React.FC<Props> = ({
                 <a>Hotel and Home Postings</a>
               </Link>
             </li>
+            <ProfileComponent
+              classNames={{
+                label: "p-4 w-full",
+                button:
+                  "hover:bg-gray-700 rounded-lg duration-500 transition-colors",
+              }}
+            />
           </ul>
         </aside>
       </div>
