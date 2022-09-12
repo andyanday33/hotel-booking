@@ -8,7 +8,6 @@ export async function createContext(opts?: trpcNext.CreateNextContextOptions) {
   async function getSessionFromHeader() {
     // TODO: get users from database, make available in context
     if (opts?.req.cookies) {
-      console.log("req alo", opts?.req.headers);
       const session = await unstable_getServerSession(
         opts.req,
         opts.res,

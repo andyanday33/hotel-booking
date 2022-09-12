@@ -9,16 +9,18 @@ type Props = {};
 type ButtonProps = {
   providerText: string;
   provider: string;
+  className?: string;
 };
 
 const ButtonWithLoadingState: React.FC<ButtonProps> = ({
   providerText,
   provider,
+  className,
 }) => {
   const [loading, setLoading] = useState(false);
   return (
     <button
-      className={`btn btn-gray-700 ${loading && "loading"}`}
+      className={`btn btn-gray-700 ${loading && "loading"} ${className}`}
       onClick={() => {
         setLoading(true);
         signIn(provider);
@@ -58,7 +60,7 @@ const Signin = (props: Props) => {
       <div className="bg-gray-200 flex flex-col mx-[10%] mt-[5%] sm:mx-[25%] md:mx-[30%] xl:mx-[35%] rounded-lg px-8 gap-2 py-4">
         <h2 className="text-center font-bold text-xl">Sign in to Book-it</h2>
         <section className="sign-in align-stretch flex flex-col py-5 gap-4">
-          <input
+          {/* <input
             type="text"
             className="input"
             placeholder="Please enter e-mail..."
@@ -72,8 +74,13 @@ const Signin = (props: Props) => {
           <button className="btn btn-outline">Sign Up</button>
           <div className="divider">
             <p>or</p>
-          </div>
+          </div> */}
           <ButtonWithLoadingState providerText="GitHub" provider="github" />
+          <ButtonWithLoadingState
+            providerText="Discord"
+            provider="discord"
+            className="btn-primary"
+          />
         </section>
       </div>
     </Layout>
