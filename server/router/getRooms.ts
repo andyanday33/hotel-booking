@@ -16,11 +16,12 @@ export const getRoomsRouter = createRouter()
       minRating: z.number().optional(),
       guestCapacity: z.string().optional(),
       numOfBeds: z.string().optional(),
+      creatorEmail: z.string().optional(),
       features: z.string().array().optional(),
       category: z.enum(["KING", "TWINS", "SINGLE", ""]).optional(),
       page: z.number().optional(),
     }),
-    resolve({ ctx, input }) {
+    resolve({ input }) {
       const paginationOptions = input.page
         ? {
             skip: (input.page - 1) * RESULTS_PER_PAGE,
@@ -37,7 +38,7 @@ export const getRoomsRouter = createRouter()
       const queryOptions = {
         where: {
           name: {
-            contains: input?.name, // replace null with undefined
+            contains: input?.name,
           },
           address: {
             contains: input?.address,
@@ -74,6 +75,13 @@ export const getRoomsRouter = createRouter()
           roomCleaning: {
             equals: features.has("room cleaning") ? true : undefined,
           },
+          creator: input.creatorEmail
+            ? {
+                email: {
+                  equals: input?.creatorEmail,
+                },
+              }
+            : undefined,
         },
       };
 

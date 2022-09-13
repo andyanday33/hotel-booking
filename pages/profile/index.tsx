@@ -39,7 +39,7 @@ const index = (props: Props) => {
               </Link>
             </li>
             <li className="text-gray-300 flex hover:bg-gray-700 transition-colors duration-500">
-              <Link href="/profile">
+              <Link href="/profile/postings">
                 <a className="mx-auto py-2">My Postings</a>
               </Link>
             </li>

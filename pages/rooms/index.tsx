@@ -1,5 +1,4 @@
 import next, { NextPage } from "next";
-import Link from "next/link";
 import { trpc } from "../../utils/trpc";
 import Layout from "../../components/layout/Layout";
 import PostingCard from "../../components/PostingCard";
@@ -9,60 +8,13 @@ import {
   HTMLInputTypeAttribute,
   PropsWithChildren,
   SetStateAction,
-  useCallback,
   useState,
 } from "react";
 import Modal from "../../components/Modal";
 import TagInput from "../../components/TagInput";
 import { Tag } from "react-tag-input";
 import { HashLoader } from "react-spinners";
-
-type PaginationProps = {
-  roomCount: number;
-  roomsPerPage: number;
-  page: number;
-  setPage: Dispatch<SetStateAction<SearchParamsType>>;
-  className: string;
-};
-
-const Pagination: React.FC<PaginationProps> = ({
-  roomCount,
-  roomsPerPage,
-  page = 1,
-  setPage,
-  className,
-}) => {
-  const handlePrevPage = useCallback(() => {
-    setPage((prev) => {
-      return { ...prev, page: page - 1 };
-    });
-  }, []);
-  const handleNextPage = useCallback(() => {
-    setPage((prev) => {
-      return { ...prev, page: page + 1 };
-    });
-  }, []);
-  const nextPageExists = roomCount - roomsPerPage * page > 0;
-  return (
-    <div className={`btn-group ${className}`}>
-      <button
-        className="btn btn-outline btn-secondary"
-        onClick={handlePrevPage}
-        disabled={page <= 1}
-      >
-        «
-      </button>
-      <button className="btn btn-secondary">{page}</button>
-      <button
-        className="btn btn-outline btn-secondary"
-        onClick={handleNextPage}
-        disabled={!nextPageExists}
-      >
-        »
-      </button>
-    </div>
-  );
-};
+import PostingGrid from "../../components/PostingGrid";
 
 type InputProps = {
   labelText: string;
@@ -113,7 +65,7 @@ const Selection: React.FC<PropsWithChildren<SelectionProps>> = ({
 
 type CategoryType = "" | "TWINS" | "KING" | "SINGLE";
 
-type SearchParamsType = {
+export type SearchParamsType = {
   name?: string;
   address?: string;
   minPrice?: number;
@@ -313,22 +265,11 @@ const Rooms: NextPage = (props) => {
       )}
       {!data && error && <p>Error: {error.message}</p>}
       {data && (
-        <>
-          <section className="mb-16 mx-[10%] grid grid-cols-1 gap-6 xs:mx-[5%] xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {data[1].map((room) => (
-              <PostingCard key={room.id} room={room} />
-            ))}
-          </section>
-          <div className="flex mb-8">
-            <Pagination
-              roomCount={data[0]}
-              roomsPerPage={5}
-              page={searchParams.page || 1}
-              setPage={setSearchParams}
-              className="mx-auto"
-            />
-          </div>
-        </>
+        <PostingGrid
+          data={data}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
       )}
     </Layout>
   );
