@@ -11,7 +11,6 @@ type Props = {
 
 type ProfileComponentProps = {
   classNames?: {
-    label?: string;
     button?: string;
   };
 };
@@ -22,8 +21,10 @@ const ProfileComponent: React.FC<ProfileComponentProps> = ({ classNames }) => {
     <>
       {status === "authenticated" ? (
         <>
-          <li className={`self-center ${classNames?.label}`}>
-            Signed in as {session.user?.name}
+          <li className={`${classNames?.button}`}>
+            <Link href="/profile">
+              <a>Signed in as {session.user?.name}</a>
+            </Link>
           </li>
           <li className={`${classNames?.button}`}>
             <button onClick={() => signOut()}>Sign Out</button>
@@ -96,7 +97,7 @@ const Layout: React.FC<Props> = ({
         </div>
         <aside className="drawer-side">
           <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
-          <ul className="menu p-4 overflow-y-auto w-80 bg-gray-800 text-gray-300">
+          <ul className="menu divide-y divide-gray-400 p-4 overflow-y-auto w-80 bg-gray-800 text-gray-300">
             {/* <!-- Sidebar content here --> */}
             <li className="hover:bg-gray-700 rounded-lg duration-500 transition-colors">
               <Link href="/">
@@ -110,7 +111,6 @@ const Layout: React.FC<Props> = ({
             </li>
             <ProfileComponent
               classNames={{
-                label: "p-4 w-full",
                 button:
                   "hover:bg-gray-700 rounded-lg duration-500 transition-colors",
               }}
