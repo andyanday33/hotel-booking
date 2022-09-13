@@ -1,13 +1,7 @@
 import { Prisma } from "@prisma/client";
-import * as trpc from "@trpc/server";
-import * as trpcNext from "@trpc/server/adapters/next";
-import { features } from "process";
-import { number, z } from "zod";
+import { z } from "zod";
 import { prisma } from "../prisma";
 import { createRouter } from "./context";
-import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import { TRPCError } from "@trpc/server";
 
 const ImageSchema = z.object({
   publicId: z.string(),
