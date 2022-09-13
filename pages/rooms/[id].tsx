@@ -152,7 +152,7 @@ const SingleRoom: NextPage = (props) => {
   }
 
   const { data: room, error } = trpc.useQuery([
-    "room.getSingleRoom",
+    "room.get.getSingleRoom",
     { id: +id },
   ]);
 

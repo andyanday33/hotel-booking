@@ -258,7 +258,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
 const Rooms: NextPage = (props) => {
   const [searchParams, setSearchParams] = useState<SearchParamsType>({});
   const [showClearFilters, setShowClearFilters] = useState(false);
-  const { data, error } = trpc.useQuery(["room.getAllRooms", searchParams]);
+  const { data, error } = trpc.useQuery(["room.get.getAllRooms", searchParams]);
 
   const handleNormalSearch: FormEventHandler = (e) => {
     e.preventDefault();

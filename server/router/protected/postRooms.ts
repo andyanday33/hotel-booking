@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
+import { date, z } from "zod";
 import { prisma } from "../../prisma";
 import { createRouter } from "../context";
 
@@ -9,11 +9,23 @@ const ImageSchema = z.object({
   url: z.string(),
 });
 
+let user: Prisma.UserCreateInput;
+
 export const postRoomsRouter = createRouter()
   .middleware(async ({ ctx, next }) => {
     if (!ctx.session) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
+    // console.log("session", ctx.session);
+
+    user = (await prisma.user.findUnique({
+      where: {
+        email: ctx.session.user!.email as string,
+      },
+    })) as User;
+
+    // console.log(user);
+
     return next();
   })
   .mutation("postNewRoom", {
@@ -36,7 +48,7 @@ export const postRoomsRouter = createRouter()
       createdAt: z.string().optional(),
       images: z.array(ImageSchema).optional(),
     }),
-    resolve({ input }) {
+    resolve({ ctx, input }) {
       const images = input?.images as Prisma.RoomImageCreateManyInput[];
       let { ...data } = input as Prisma.RoomCreateInput;
       data.images = {
@@ -45,8 +57,10 @@ export const postRoomsRouter = createRouter()
           skipDuplicates: true,
         },
       };
+
+      console.log(data);
       return prisma.room.create({
-        data,
+        data: { ...data, creator: { connect: { id: user.id } } },
       });
     },
   })
@@ -67,7 +81,6 @@ export const postRoomsRouter = createRouter()
       ratings: z.number().optional(),
       numOfReviews: z.number().optional(),
       category: z.enum(["KING", "TWINS", "SINGLE"]).optional(),
-      creatorId: z.string().optional(),
       createdAt: z.string().optional(),
       images: z.array(ImageSchema).optional(),
     }),
@@ -80,6 +93,7 @@ export const postRoomsRouter = createRouter()
           skipDuplicates: true,
         },
       };
+
       return prisma.room.update({
         where: {
           id: input.id,

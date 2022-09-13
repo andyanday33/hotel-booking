@@ -9,6 +9,7 @@ type Props = {};
 
 const index = (props: Props) => {
   const { data: session, status } = useSession();
+  console.log(session);
   if (status === "loading") {
     <Layout>
       <div className="min-w-screen min-h-screen flex">
