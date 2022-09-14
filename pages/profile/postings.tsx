@@ -20,9 +20,18 @@ const Rooms = ({ email }: Props) => {
   const [searchParams, setSearchParams] = useState<SearchParamsType>({
     page: 1,
   });
-  console.log(rooms);
   return (
     <>
+      {error && (
+        <div className="min-w-screen min-h-screen flex">
+          <p className="text-white">Error: {error.message}</p>
+        </div>
+      )}
+      {!rooms && (
+        <div className="min-w-screen min-h-screen flex">
+          <HashLoader color="#fffffff" className="my-auto mx-auto" />
+        </div>
+      )}
       {rooms && (
         <PostingGrid
           data={rooms}
