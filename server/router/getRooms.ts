@@ -122,6 +122,7 @@ export const getRoomsRouter = createRouter()
         },
         include: {
           images: true,
+          creator: true,
         },
       });
     },

@@ -3,7 +3,7 @@ import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
 import Layout from "../../components/layout/Layout";
 import ImageWithFallback from "../../components/ImageWithFallback";
-import { Room, RoomImage } from "@prisma/client";
+import { Room, RoomImage, User } from "@prisma/client";
 import Carousel from "../../components/Carousel";
 import { DateRange, RangeKeyDict } from "react-date-range";
 
@@ -18,7 +18,7 @@ type FeatureProps = {
 };
 
 type RoomDetailsProps = {
-  room: Room & { images: RoomImage[] };
+  room: Room & { images: RoomImage[]; creator: User | null };
 };
 
 type ReservationDatePickerProps = {
@@ -88,8 +88,12 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
             &#9733; {room.ratings.toFixed(2)} | {room.numOfReviews} reviews |{" "}
             {room.address}
           </p>
-          {/* TODO: Configure user queries on tRPC */}
-          {room.creatorId && <p>Hosted by {room.creatorId}</p>}
+          {room?.creator?.name && (
+            <p>
+              Hosted by {room.creator.name} <br /> Contact at{" "}
+              {room.creator.email}
+            </p>
+          )}
           <p>{room.description}</p>
         </div>
         <div className="room-features pt-4">
@@ -170,8 +174,6 @@ const SingleRoom: NextPage = (props) => {
       {room && (
         <div className="grid border-b-2 text-gray-300 border-gray-600 pb-2 md:my-14 md:mx-16">
           <section className="grid grid-cols-1 gap-4 post-header md:flex md:justify-between">
-            {/* TODO: add a spinner here */}
-
             <RoomDetails room={room} />
           </section>
           <section></section>
