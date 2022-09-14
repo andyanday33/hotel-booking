@@ -89,7 +89,7 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
             {room.address}
           </p>
           {room?.creator?.name && (
-            <p>
+            <p className="my-4 text-accent">
               Hosted by {room.creator.name} <br /> Contact at{" "}
               {room.creator.email}
             </p>
