@@ -37,8 +37,7 @@ const Create = (props: Props) => {
         initialValues={initialValues}
         onSubmit={(values, actions) => {
           console.log({ values, actions });
-          // CHECK ERRORS
-          // SEND TO SERVE
+          // TODO: CHECK ERRORS
 
           const processedValues = {
             ...values,
