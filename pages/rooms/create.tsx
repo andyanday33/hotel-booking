@@ -1,25 +1,32 @@
 import React from "react";
 import { Formik, Form, Field, FieldArray } from "formik";
-import { Prisma } from "@prisma/client";
 import Layout from "../../components/layout/Layout";
+import { trpc } from "../../utils/trpc";
+import { string } from "zod";
 
 type Props = {};
 
+type ImageType = {
+  url: string;
+  publicId: string;
+};
+
 const Create = (props: Props) => {
-  const initialValues: Prisma.RoomCreateInput = {
+  const mutation = trpc.useMutation(["room.post.postNewRoom"]);
+  const initialValues = {
     name: "",
     description: "",
     address: "",
     guestCapacity: 0,
     numOfBeds: 0,
-    category: "SINGLE",
+    category: "SINGLE" as "SINGLE" | "TWINS" | "KING",
     pricePerNight: 0,
-    breakfast: false,
-    internet: false,
-    petsAllowed: false,
-    roomCleaning: false,
-    airconditioned: false,
-    images: {},
+    breakfast: "false",
+    internet: "false",
+    petsAllowed: "false",
+    roomCleaning: "false",
+    airconditioned: "false",
+    images: [] as ImageType[],
   };
   return (
     <Layout>
@@ -30,7 +37,21 @@ const Create = (props: Props) => {
         initialValues={initialValues}
         onSubmit={(values, actions) => {
           console.log({ values, actions });
+          // CHECK ERRORS
+          // SEND TO SERVE
+
+          const processedValues = {
+            ...values,
+            petsAllowed: values.petsAllowed === "true" ? true : false,
+            breakfast: values.breakfast === "true" ? true : false,
+            internet: values.internet === "true" ? true : false,
+            roomCleaning: values.roomCleaning === "true" ? true : false,
+            airconditioned: values.airconditioned === "true" ? true : false,
+            images: [{ url: "", publicId: "" }],
+          };
+
           alert(JSON.stringify(values, null, 2));
+          mutation.mutate(processedValues);
           actions.setSubmitting(false);
         }}
       >
