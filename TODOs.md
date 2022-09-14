@@ -1,3 +1,6 @@
 ## TODOS
 
-- Add tRPC for type safety.
+- Image upload (connected to S3 probs).
+- Edit posting
+- Delete posting
+- Admin panel
