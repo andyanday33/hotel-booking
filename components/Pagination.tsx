@@ -17,13 +17,14 @@ const Pagination: React.FC<PaginationProps> = ({
   className,
 }) => {
   const handlePrevPage = useCallback(() => {
+    console.log(page);
     setPage((prev) => {
-      return { ...prev, page: page - 1 };
+      return { ...prev, page: prev.page! - 1 };
     });
   }, []);
   const handleNextPage = useCallback(() => {
     setPage((prev) => {
-      return { ...prev, page: page + 1 };
+      return { ...prev, page: prev.page ? prev.page + 1 : 2 };
     });
   }, []);
   const nextPageExists = roomCount - roomsPerPage * page > 0;
