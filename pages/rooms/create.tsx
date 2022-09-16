@@ -1,8 +1,8 @@
-import React from "react";
-import { Formik, Form, Field, FieldArray } from "formik";
+import React, { useState } from "react";
 import Layout from "../../components/layout/Layout";
 import { trpc } from "../../utils/trpc";
 import { string } from "zod";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 type Props = {};
 
@@ -11,190 +11,213 @@ type ImageType = {
   publicId: string;
 };
 
+type Inputs = {
+  name: string;
+  description: string;
+  address: string;
+  guestCapacity: number;
+  numOfBeds: number;
+  category: "SINGLE" | "TWINS" | "KING";
+  pricePerNight: number;
+  breakfast: string;
+  internet: string;
+  petsAllowed: string;
+  roomCleaning: string;
+  airconditioned: string;
+  images: ImageType[];
+};
+
 const Create = (props: Props) => {
   const mutation = trpc.useMutation(["room.post.postNewRoom"]);
-  const initialValues = {
-    name: "",
-    description: "",
-    address: "",
-    guestCapacity: 0,
-    numOfBeds: 0,
-    category: "SINGLE" as "SINGLE" | "TWINS" | "KING",
-    pricePerNight: 0,
-    breakfast: "false",
-    internet: "false",
-    petsAllowed: "false",
-    roomCleaning: "false",
-    airconditioned: "false",
-    images: [] as ImageType[],
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const newData = {
+      ...data,
+      breakfast: data.breakfast === "true" ? true : false,
+      internet: data.internet === "true" ? true : false,
+      petsAllowed: data.petsAllowed === "true" ? true : false,
+      roomCleaning: data.roomCleaning === "true" ? true : false,
+      airconditioned: data.airconditioned === "true" ? true : false,
+      pricePerNight: +data.pricePerNight,
+      numOfBeds: +data.numOfBeds,
+      guestCapacity: +data.guestCapacity,
+    };
+
+    mutation.mutate(newData);
+    console.log(newData);
   };
+
+  const errorsExist =
+    errors.name ||
+    errors.description ||
+    errors.address ||
+    errors.guestCapacity ||
+    errors.numOfBeds ||
+    errors.category ||
+    errors.pricePerNight;
+
   return (
     <Layout>
       <h1 className="text-white text-center my-8 text-3xl">
         Create new room posting
       </h1>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values, actions) => {
-          console.log({ values, actions });
-          // TODO: CHECK ERRORS
-
-          const processedValues = {
-            ...values,
-            petsAllowed: values.petsAllowed === "true" ? true : false,
-            breakfast: values.breakfast === "true" ? true : false,
-            internet: values.internet === "true" ? true : false,
-            roomCleaning: values.roomCleaning === "true" ? true : false,
-            airconditioned: values.airconditioned === "true" ? true : false,
-            images: [{ url: "", publicId: "" }],
-          };
-
-          alert(JSON.stringify(values, null, 2));
-          mutation.mutate(processedValues);
-          actions.setSubmitting(false);
-        }}
+      {errorsExist && (
+        <p className="text-error text-center mb-4">
+          Some of the required fields are missing
+        </p>
+      )}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="border border-gray-500 text-xs sm:text-sm text-white p-8 rounded-xl grid grid-cols-6 items-center mx-[10%] md:mx-[15%] lg:mx-[20%] xl:mx-[25%] gap-4"
       >
-        <Form className="border border-gray-500 text-xs sm:text-sm text-white p-8 rounded-xl grid grid-cols-6 items-center mx-[10%] md:mx-[15%] lg:mx-[20%] xl:mx-[25%] gap-4">
-          <label htmlFor="name" className="col-span-2 sm:col-span-1">
-            Posting title:
-          </label>
-          <Field
-            id="name"
-            name="name"
-            placeholder="Room Title"
-            className="flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5"
-          />
-
-          <label htmlFor="description" className="col-span-2 sm:col-span-1">
-            Description:
-          </label>
-          <Field
-            as="textarea"
-            id="description"
-            name="description"
-            placeholder="Description"
-            className="flex-1 textarea input-xs sm:input-md text-gray-800 h-32 col-span-4 sm:col-span-5"
-          />
-
-          <label htmlFor="address" className="col-span-2 sm:col-span-1">
-            Address:
-          </label>
-          <Field
-            id="address"
-            name="address"
-            placeholder="Address"
-            className="flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5"
-          />
-
-          <label htmlFor="guestCapacity" className="col-span-2 sm:col-span-1">
-            Guest Capacity:
-          </label>
-          <Field
-            id="guestCapacity"
-            type="number"
-            name="guestCapacity"
-            placeholder="Guest Capacity"
-            className="flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-2"
-          />
-          <label htmlFor="numOfBeds" className="col-span-2 sm:col-span-1">
-            Beds:
-          </label>
-          <Field
-            id="numOfBeds"
-            type="number"
-            name="numOfBeds"
-            placeholder="Number of Beds"
-            className="flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-2"
-          />
-          <label htmlFor="pricePerNight" className="col-span-2 sm:col-span-1">
-            Price Per Night:
-          </label>
-          <Field
-            id="pricePerNight"
-            type="number"
-            name="pricePerNight"
-            placeholder="Number of Beds"
-            className="flex-1 input input-xs sm:input-md text-gray-800 col-span-3 sm:col-span-4"
-          />
-          <p className="text-xl sm:text-2xl">£</p>
-          <label htmlFor="petsAllowed" className="col-span-2 sm:col-span-1">
-            Pets Allowed:
-          </label>
-          <Field
-            as="select"
-            id="petsAllowed"
-            name="petsAllowed"
-            className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </Field>
-          <label htmlFor="airconditioned" className="col-span-2 sm:col-span-1">
-            Air Conditioning:
-          </label>
-          <Field
-            as="select"
-            id="airconditioned"
-            name="airconditioned"
-            className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
-          >
-            <option value="true">Exists</option>
-            <option value="false">Doesn't Exist</option>
-          </Field>
-          <label htmlFor="breakfast" className="col-span-2 sm:col-span-1">
-            Breakfast:
-          </label>
-          <Field
-            as="select"
-            id="breakfast"
-            name="breakfast"
-            className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
-          >
-            <option value="true">Exists</option>
-            <option value="false">Doesn't Exist</option>
-          </Field>
-          <label htmlFor="roomCleaning" className="col-span-2 sm:col-span-1">
-            Room Cleaning:
-          </label>
-          <Field
-            as="select"
-            id="roomCleaning"
-            name="roomCleaning"
-            className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
-          >
-            <option value="true">Exists</option>
-            <option value="false">Doesn't Exist</option>
-          </Field>
-          <label htmlFor="internet" className="col-span-2 sm:col-span-1">
-            Internet:
-          </label>
-          <Field
-            as="select"
-            id="internet"
-            name="internet"
-            className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
-          >
-            <option value="true">Exists</option>
-            <option value="false">Doesn't Exist</option>
-          </Field>
-          <label htmlFor="category" className="col-span-2 sm:col-span-1">
-            Bed Category:
-          </label>
-          <Field
-            as="select"
-            id="category"
-            name="category"
-            className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
-          >
-            <option value="SINGLE">Single</option>
-            <option value="TWINS">Twins</option>
-            <option value="KING">King</option>
-          </Field>
-          <button type="submit" className="btn btn-secondary col-span-6">
-            Submit
-          </button>
-        </Form>
-      </Formik>
+        <label htmlFor="name" className="col-span-2 sm:col-span-1">
+          Posting title:
+        </label>
+        <input
+          id="name"
+          {...register("name", { required: true })}
+          placeholder="Room Title"
+          className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5 ${
+            errors.name && "input-bordered input-error border-2"
+          }`}
+        />
+        <label htmlFor="description" className="col-span-2 sm:col-span-1">
+          Description:
+        </label>
+        <input
+          type="textArea"
+          id="description"
+          {...register("description", { required: true })}
+          placeholder="Description"
+          className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5 ${
+            errors.name && "input-bordered input-error border-2"
+          }`}
+        />
+        <label htmlFor="address" className="col-span-2 sm:col-span-1">
+          Address:
+        </label>
+        <input
+          id="address"
+          {...register("address", { required: true })}
+          placeholder="Address"
+          className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5 ${
+            errors.name && "input-bordered input-error border-2"
+          }`}
+        />
+        <label htmlFor="guestCapacity" className="col-span-2 sm:col-span-1">
+          Guest Capacity:
+        </label>
+        <input
+          id="guestCapacity"
+          type="number"
+          {...register("guestCapacity", { required: true, min: 0 })}
+          placeholder="Guest Capacity"
+          className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-2 ${
+            errors.name && "input-bordered input-error border-2"
+          }`}
+        />
+        <label htmlFor="numOfBeds" className="col-span-2 sm:col-span-1">
+          Beds:
+        </label>
+        <input
+          id="numOfBeds"
+          type="number"
+          {...register("numOfBeds", { required: true, min: 0 })}
+          placeholder="Number of Beds"
+          className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-2 ${
+            errors.name && "input-bordered input-error border-2"
+          }`}
+        />
+        <label htmlFor="pricePerNight" className="col-span-2 sm:col-span-1">
+          Price Per Night:
+        </label>
+        <input
+          id="pricePerNight"
+          type="number"
+          {...register("pricePerNight", { required: true, min: 0 })}
+          placeholder="Number of Beds"
+          className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-3 sm:col-span-4 ${
+            errors.name && "input-bordered input-error border-2"
+          }`}
+        />
+        <p className="text-xl sm:text-2xl">£</p>
+        <label htmlFor="petsAllowed" className="col-span-2 sm:col-span-1">
+          Pets Allowed:
+        </label>
+        <select
+          id="petsAllowed"
+          {...register("petsAllowed", { required: true })}
+          className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+        >
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+        <label htmlFor="airconditioned" className="col-span-2 sm:col-span-1">
+          Air Conditioning:
+        </label>
+        <select
+          id="airconditioned"
+          {...register("airconditioned", { required: true })}
+          className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+        >
+          <option value="true">Exists</option>
+          <option value="false">Doesn't Exist</option>
+        </select>
+        <label htmlFor="breakfast" className="col-span-2 sm:col-span-1">
+          Breakfast:
+        </label>
+        <select
+          id="breakfast"
+          {...register("breakfast", { required: true })}
+          className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+        >
+          <option value="true">Exists</option>
+          <option value="false">Doesn't Exist</option>
+        </select>
+        <label htmlFor="roomCleaning" className="col-span-2 sm:col-span-1">
+          Room Cleaning:
+        </label>
+        <select
+          id="roomCleaning"
+          {...register("roomCleaning", { required: true })}
+          className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+        >
+          <option value="true">Exists</option>
+          <option value="false">Doesn't Exist</option>
+        </select>
+        <label htmlFor="internet" className="col-span-2 sm:col-span-1">
+          Internet:
+        </label>
+        <select
+          id="internet"
+          {...register("internet", { required: true })}
+          className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+        >
+          <option value="true">Exists</option>
+          <option value="false">Doesn't Exist</option>
+        </select>
+        <label htmlFor="category" className="col-span-2 sm:col-span-1">
+          Bed Category:
+        </label>
+        <select
+          id="category"
+          {...register("category", { required: true })}
+          className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+        >
+          <option value="SINGLE">Single</option>
+          <option value="TWINS">Twins</option>
+          <option value="KING">King</option>
+        </select>
+        <button type="submit" className="btn btn-secondary col-span-6">
+          Submit
+        </button>
+      </form>
     </Layout>
   );
 };
