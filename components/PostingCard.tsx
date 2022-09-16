@@ -31,18 +31,24 @@ const Badges: React.FC<BadgesProps> = ({
   airconditioned,
   roomCleaning,
 }) => (
-  <div className="min-h-[0.5rem] xs:min-h-[1rem] card-actions justify-end pb-4">
+  <div className="min-h-[0.5rem] xs:min-h-[1rem] h-32 sm:h-16 card-actions justify-end pb-4">
     {/* TODO: add other badges here */}
-    {internet && <div className="badge badge-outline text-sm">Internet</div>}
-    {breakfast && <div className="badge badge-outline text-sm">Breakfast</div>}
+    {internet && (
+      <div className="badge badge-sm badge-outline text-sm">Internet</div>
+    )}
+    {breakfast && (
+      <div className="badge badge-sm badge-outline text-sm">Breakfast</div>
+    )}
     {petsAllowed && (
-      <div className="badge badge-outline text-sm">Pets Allowed</div>
+      <div className="badge badge-sm text-sm badge-outline">Pets Allowed</div>
     )}
     {airconditioned && (
-      <div className="badge badge-outline text-sm">Air Conditioned</div>
+      <div className="badge badge-sm badge-outline text-sm">
+        Air Conditioned
+      </div>
     )}
     {roomCleaning && (
-      <div className="badge badge-outline text-sm">Room Cleaning</div>
+      <div className="badge badge-sm badge-outline text-sm">Room Cleaning</div>
     )}
   </div>
 );
