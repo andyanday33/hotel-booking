@@ -38,11 +38,11 @@ const Signin = (props: Props) => {
         <h2 className="text-center font-bold text-xl">Sign in to Book-it</h2>
         <section className="sign-in align-stretch flex flex-col py-5 gap-4">
           <ButtonWithLoadingState
-            text="GitHub"
+            text="Sign In with GitHub"
             onClick={() => signIn("github")}
           />
           <ButtonWithLoadingState
-            text="Discord"
+            text="Sign In with Discord"
             onClick={() => signIn("discord")}
             className="btn-primary"
           />

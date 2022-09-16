@@ -3,6 +3,7 @@ import Layout from "../../components/layout/Layout";
 import { trpc } from "../../utils/trpc";
 import { string } from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import ButtonWithLoadingState from "../../components/ButtonWithLoadingState";
 
 type Props = {};
 
@@ -50,7 +51,7 @@ const Create = (props: Props) => {
       images: [],
     };
 
-    mutation.mutate(newData);
+    const room = mutation.mutate(newData);
     console.log(newData);
   };
 
@@ -215,9 +216,11 @@ const Create = (props: Props) => {
           <option value="TWINS">Twins</option>
           <option value="KING">King</option>
         </select>
-        <button type="submit" className="btn btn-secondary col-span-6">
-          Submit
-        </button>
+        <ButtonWithLoadingState
+          text="Submit"
+          className="btn btn-secondary col-span-6"
+          error={errorsExist}
+        ></ButtonWithLoadingState>
       </form>
     </Layout>
   );
