@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout";
 import { trpc } from "../../utils/trpc";
 import { string } from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ButtonWithLoadingState from "../../components/ButtonWithLoadingState";
+import { router } from "next/client";
 
 type Props = {};
 
@@ -51,9 +52,14 @@ const Create = (props: Props) => {
       images: [],
     };
 
-    const room = mutation.mutate(newData);
-    console.log(newData);
+    mutation.mutate(newData);
   };
+
+  useEffect(() => {
+    if (mutation.data) {
+      router.push("/rooms/" + mutation.data.id);
+    }
+  }, [mutation.data]);
 
   const errorsExist =
     errors.name ||
