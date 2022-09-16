@@ -47,6 +47,7 @@ const Create = (props: Props) => {
       pricePerNight: +data.pricePerNight,
       numOfBeds: +data.numOfBeds,
       guestCapacity: +data.guestCapacity,
+      images: [],
     };
 
     mutation.mutate(newData);
@@ -96,7 +97,7 @@ const Create = (props: Props) => {
           {...register("description", { required: true })}
           placeholder="Description"
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5 ${
-            errors.name && "input-bordered input-error border-2"
+            errors.description && "input-bordered input-error border-2"
           }`}
         />
         <label htmlFor="address" className="col-span-2 sm:col-span-1">
@@ -107,7 +108,7 @@ const Create = (props: Props) => {
           {...register("address", { required: true })}
           placeholder="Address"
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5 ${
-            errors.name && "input-bordered input-error border-2"
+            errors.address && "input-bordered input-error border-2"
           }`}
         />
         <label htmlFor="guestCapacity" className="col-span-2 sm:col-span-1">
@@ -119,7 +120,7 @@ const Create = (props: Props) => {
           {...register("guestCapacity", { required: true, min: 0 })}
           placeholder="Guest Capacity"
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-2 ${
-            errors.name && "input-bordered input-error border-2"
+            errors.guestCapacity && "input-bordered input-error border-2"
           }`}
         />
         <label htmlFor="numOfBeds" className="col-span-2 sm:col-span-1">
@@ -131,7 +132,7 @@ const Create = (props: Props) => {
           {...register("numOfBeds", { required: true, min: 0 })}
           placeholder="Number of Beds"
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-2 ${
-            errors.name && "input-bordered input-error border-2"
+            errors.numOfBeds && "input-bordered input-error border-2"
           }`}
         />
         <label htmlFor="pricePerNight" className="col-span-2 sm:col-span-1">
@@ -141,9 +142,9 @@ const Create = (props: Props) => {
           id="pricePerNight"
           type="number"
           {...register("pricePerNight", { required: true, min: 0 })}
-          placeholder="Number of Beds"
+          placeholder="Price Per Night"
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-3 sm:col-span-4 ${
-            errors.name && "input-bordered input-error border-2"
+            errors.pricePerNight && "input-bordered input-error border-2"
           }`}
         />
         <p className="text-xl sm:text-2xl">£</p>
