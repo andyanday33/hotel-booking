@@ -13,13 +13,13 @@ type Props = {
 };
 
 const Rooms = ({ email }: Props) => {
-  const { data: rooms, error } = trpc.useQuery([
-    "room.get.getAllRooms",
-    { creatorEmail: email },
-  ]);
   const [searchParams, setSearchParams] = useState<SearchParamsType>({
     page: 1,
   });
+  const { data: rooms, error } = trpc.useQuery([
+    "room.get.getAllRooms",
+    { creatorEmail: email, ...searchParams },
+  ]);
   return (
     <>
       {error && (

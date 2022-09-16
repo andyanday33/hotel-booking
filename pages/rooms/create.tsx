@@ -55,6 +55,7 @@ const Create = (props: Props) => {
     mutation.mutate(newData);
   };
 
+  // Redirect to newly created room after submission
   useEffect(() => {
     if (mutation.data) {
       router.push("/rooms/" + mutation.data.id);
