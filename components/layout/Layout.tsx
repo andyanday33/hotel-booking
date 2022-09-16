@@ -88,6 +88,11 @@ const Layout: React.FC<Props> = ({
                     <a>Hotel and Home Postings</a>
                   </Link>
                 </li>
+                <li>
+                  <Link href="/rooms/create">
+                    <a>Create New Posting</a>
+                  </Link>
+                </li>
                 <ProfileComponent />
               </ul>
             </div>
@@ -107,6 +112,11 @@ const Layout: React.FC<Props> = ({
             <li className="hover:bg-gray-700 rounded-lg duration-500 transition-colors">
               <Link href="/rooms">
                 <a>Hotel and Home Postings</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/rooms/create">
+                <a>Create New Posting</a>
               </Link>
             </li>
             <ProfileComponent
