@@ -3,33 +3,9 @@ import { signIn, useSession } from "next-auth/react";
 import Layout from "../../components/layout/Layout";
 import { useRouter } from "next/router";
 import { HashLoader } from "react-spinners";
+import ButtonWithLoadingState from "../../components/ButtonWithLoadingState";
 
 type Props = {};
-
-type ButtonProps = {
-  providerText: string;
-  provider: string;
-  className?: string;
-};
-
-const ButtonWithLoadingState: React.FC<ButtonProps> = ({
-  providerText,
-  provider,
-  className,
-}) => {
-  const [loading, setLoading] = useState(false);
-  return (
-    <button
-      className={`btn btn-gray-700 ${loading && "loading"} ${className}`}
-      onClick={() => {
-        setLoading(true);
-        signIn(provider);
-      }}
-    >
-      Sign in with {providerText}
-    </button>
-  );
-};
 
 const Signin = (props: Props) => {
   const { data, status } = useSession();
@@ -61,10 +37,13 @@ const Signin = (props: Props) => {
       <div className="bg-gray-200 flex flex-col mx-[10%] mt-[5%] sm:mx-[25%] md:mx-[30%] xl:mx-[35%] rounded-lg px-8 gap-2 py-4">
         <h2 className="text-center font-bold text-xl">Sign in to Book-it</h2>
         <section className="sign-in align-stretch flex flex-col py-5 gap-4">
-          <ButtonWithLoadingState providerText="GitHub" provider="github" />
           <ButtonWithLoadingState
-            providerText="Discord"
-            provider="discord"
+            text="GitHub"
+            onClick={() => signIn("github")}
+          />
+          <ButtonWithLoadingState
+            text="Discord"
+            onClick={() => signIn("discord")}
             className="btn-primary"
           />
         </section>
