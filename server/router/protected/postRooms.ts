@@ -25,6 +25,9 @@ export const postRoomsRouter = createRouter()
     })) as User;
 
     // console.log(user);
+    if (!user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
 
     return next();
   })
@@ -64,7 +67,7 @@ export const postRoomsRouter = createRouter()
       });
     },
   })
-  .mutation("putUpdateRoom", {
+  .mutation("updateRoom", {
     input: z.object({
       id: z.number(),
       name: z.string().optional(),
@@ -84,7 +87,24 @@ export const postRoomsRouter = createRouter()
       createdAt: z.string().optional(),
       images: z.array(ImageSchema).optional(),
     }),
-    resolve({ input }) {
+    async resolve({ ctx, input }) {
+      // CHECK AUTHORIZATION
+      user = (await prisma.user.findUnique({
+        where: {
+          email: ctx.session!.user!.email as string,
+        },
+      })) as User;
+
+      const room = await prisma.room.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+      if (room?.creatorId !== user.id) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      // CONTINUE PROCESSING
       const images = input?.images as Prisma.RoomImageCreateManyInput[];
       let { ...data } = input as Prisma.RoomCreateInput;
       data.images = {
@@ -108,7 +128,24 @@ export const postRoomsRouter = createRouter()
     input: z.object({
       id: z.number(),
     }),
-    resolve({ input }) {
+    async resolve({ ctx, input }) {
+      // CHECK AUTHORIZATION
+      user = (await prisma.user.findUnique({
+        where: {
+          email: ctx.session!.user!.email as string,
+        },
+      })) as User;
+
+      const room = await prisma.room.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+      if (room?.creatorId !== user.id) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      // CONTINUE PROCESSING
       return prisma.room.delete({
         where: {
           id: input.id,
