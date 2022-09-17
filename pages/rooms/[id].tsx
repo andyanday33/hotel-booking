@@ -12,6 +12,7 @@ import "react-date-range/dist/theme/default.css";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 import ButtonWithLoadingState from "../../components/ButtonWithLoadingState";
+import { useSession } from "next-auth/react";
 
 type FeatureProps = {
   feature: string;
@@ -79,6 +80,14 @@ const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
 const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
   const deleteMutation = trpc.useMutation(["room.post.deleteSingleRoom"]);
   const router = useRouter();
+  const { data, status } = useSession();
+
+  const [isCreator, setIsCreator] = useState(false);
+  useEffect(() => {
+    if (data?.user?.email === room.creator?.email && data?.user?.email) {
+      setIsCreator(true);
+    }
+  }, [data?.user?.email]);
 
   const handleDeletion = () => {
     deleteMutation.mutate({ id: room.id });
@@ -88,7 +97,11 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
     if (deleteMutation.isSuccess) {
       router.push("/profile/postings");
     }
-  }, [deleteMutation.isSuccess]);
+    if (deleteMutation.isError) {
+      alert("Error deleting room: " + deleteMutation.error);
+      router.reload();
+    }
+  }, [deleteMutation.isSuccess, deleteMutation.isError, deleteMutation.error]);
 
   return (
     <>
@@ -102,11 +115,13 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
             &#9733; {room.ratings.toFixed(2)} | {room.numOfReviews} reviews |{" "}
             {room.address}
           </p>
-          <ButtonWithLoadingState
-            text="Delete Posting"
-            className="btn-error btn-outline"
-            onClick={handleDeletion}
-          />
+          {isCreator && (
+            <ButtonWithLoadingState
+              text="Delete Posting"
+              className="btn-error btn-outline my-4"
+              onClick={handleDeletion}
+            />
+          )}
           {room?.creator?.name && (
             <p className="my-4 text-accent">
               Hosted by {room.creator.name} <br /> Contact at{" "}
