@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "../prisma";
 import { createRouter } from "./context";
@@ -21,7 +22,7 @@ export const getRoomsRouter = createRouter()
       category: z.enum(["KING", "TWINS", "SINGLE", ""]).optional(),
       page: z.number().optional(),
     }),
-    resolve({ input }) {
+    async resolve({ input }) {
       const paginationOptions = input.page
         ? {
             skip: (input.page - 1) * RESULTS_PER_PAGE,
@@ -85,7 +86,7 @@ export const getRoomsRouter = createRouter()
         },
       };
 
-      return prisma.$transaction([
+      return await prisma.$transaction([
         prisma.room.count({
           ...queryOptions,
         }),
@@ -115,8 +116,8 @@ export const getRoomsRouter = createRouter()
     input: z.object({
       id: z.number(),
     }),
-    resolve({ input }) {
-      return prisma.room.findUnique({
+    async resolve({ input }) {
+      const room = await prisma.room.findUnique({
         where: {
           id: input.id,
         },
@@ -125,5 +126,11 @@ export const getRoomsRouter = createRouter()
           creator: true,
         },
       });
+
+      if (!room) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      return room;
     },
   });

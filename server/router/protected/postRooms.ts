@@ -51,7 +51,7 @@ export const postRoomsRouter = createRouter()
       createdAt: z.string().optional(),
       images: z.array(ImageSchema).optional(),
     }),
-    resolve({ ctx, input }) {
+    async resolve({ ctx, input }) {
       const images = input?.images as Prisma.RoomImageCreateManyInput[];
       let { ...data } = input as Prisma.RoomCreateInput;
       data.images = {
@@ -62,7 +62,7 @@ export const postRoomsRouter = createRouter()
       };
 
       console.log(data);
-      return prisma.room.create({
+      return await prisma.room.create({
         data: { ...data, creator: { connect: { id: user.id } } },
       });
     },
@@ -114,7 +114,7 @@ export const postRoomsRouter = createRouter()
         },
       };
 
-      return prisma.room.update({
+      return await prisma.room.update({
         where: {
           id: input.id,
         },
@@ -141,12 +141,17 @@ export const postRoomsRouter = createRouter()
           id: input.id,
         },
       });
+
+      if (!room) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
       if (room?.creatorId !== user.id) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       // CONTINUE PROCESSING
-      return prisma.room.delete({
+      return await prisma.room.delete({
         where: {
           id: input.id,
         },

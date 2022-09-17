@@ -9,8 +9,9 @@ import { DateRange, RangeKeyDict } from "react-date-range";
 
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
+import ButtonWithLoadingState from "../../components/ButtonWithLoadingState";
 
 type FeatureProps = {
   feature: string;
@@ -76,6 +77,19 @@ const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
 };
 
 const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
+  const deleteMutation = trpc.useMutation(["room.post.deleteSingleRoom"]);
+  const router = useRouter();
+
+  const handleDeletion = () => {
+    deleteMutation.mutate({ id: room.id });
+  };
+
+  useEffect(() => {
+    if (deleteMutation.isSuccess) {
+      router.push("/profile/postings");
+    }
+  }, [deleteMutation.isSuccess]);
+
   return (
     <>
       <section
@@ -88,6 +102,11 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
             &#9733; {room.ratings.toFixed(2)} | {room.numOfReviews} reviews |{" "}
             {room.address}
           </p>
+          <ButtonWithLoadingState
+            text="Delete Posting"
+            className="btn-error btn-outline"
+            onClick={handleDeletion}
+          />
           {room?.creator?.name && (
             <p className="my-4 text-accent">
               Hosted by {room.creator.name} <br /> Contact at{" "}
@@ -164,21 +183,22 @@ const SingleRoom: NextPage = (props) => {
     <Layout>
       {/* TODO: consider extracting layout
       TODO: pass down data as a prop if not initial request */}
-
-      {!room && !error && (
-        <div className="min-w-screen min-h-screen flex">
-          <HashLoader color="#fffffff" className="my-auto mx-auto" />
-        </div>
-      )}
-      {error && !room && <p>Error: {error.message}</p>}
-      {room && (
-        <div className="grid border-b-2 text-gray-300 border-gray-600 pb-2 md:my-14 md:mx-16">
-          <section className="grid grid-cols-1 gap-4 post-header md:flex md:justify-between">
-            <RoomDetails room={room} />
-          </section>
-          <section></section>
-        </div>
-      )}
+      <>
+        {!room && !error && (
+          <div className="min-w-screen min-h-screen flex">
+            <HashLoader color="#fffffff" className="my-auto mx-auto" />
+          </div>
+        )}
+        {error && !room && <p>Error: {error.message}</p>}
+        {room && (
+          <div className="grid border-b-2 text-gray-300 border-gray-600 pb-2 md:my-14 md:mx-16">
+            <section className="grid grid-cols-1 gap-4 post-header md:flex md:justify-between">
+              <RoomDetails room={room} />
+            </section>
+            <section></section>
+          </div>
+        )}
+      </>
     </Layout>
   );
 };
