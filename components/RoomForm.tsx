@@ -5,11 +5,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { UseMutationResult } from "react-query";
 import ButtonWithLoadingState from "./ButtonWithLoadingState";
 
-type Props = {
-  mutation: UseMutationResult<Room, any, any, any>;
-  router?: NextRouter;
-};
-
 type ImageType = {
   url: string;
   publicId: string;
@@ -31,7 +26,13 @@ type Inputs = {
   images: ImageType[];
 };
 
-const RoomForm = ({ mutation, router }: Props) => {
+type Props = {
+  mutation: UseMutationResult<Room, any, any, any>;
+  router?: NextRouter;
+  initialValues?: Room & { images: ImageType[] };
+};
+
+const RoomForm = ({ mutation, router, initialValues }: Props) => {
   const {
     register,
     handleSubmit,
@@ -93,6 +94,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5 ${
             errors.name && "input-bordered input-error border-2"
           }`}
+          defaultValue={initialValues?.name}
         />
         <label htmlFor="description" className="col-span-2 sm:col-span-1">
           Description:
@@ -105,6 +107,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5 ${
             errors.description && "input-bordered input-error border-2"
           }`}
+          defaultValue={initialValues?.description}
         />
         <label htmlFor="address" className="col-span-2 sm:col-span-1">
           Address:
@@ -116,6 +119,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-5 ${
             errors.address && "input-bordered input-error border-2"
           }`}
+          defaultValue={initialValues?.address}
         />
         <label htmlFor="guestCapacity" className="col-span-2 sm:col-span-1">
           Guest Capacity:
@@ -128,6 +132,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-2 ${
             errors.guestCapacity && "input-bordered input-error border-2"
           }`}
+          defaultValue={initialValues?.guestCapacity}
         />
         <label htmlFor="numOfBeds" className="col-span-2 sm:col-span-1">
           Beds:
@@ -140,6 +145,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-4 sm:col-span-2 ${
             errors.numOfBeds && "input-bordered input-error border-2"
           }`}
+          defaultValue={initialValues?.numOfBeds}
         />
         <label htmlFor="pricePerNight" className="col-span-2 sm:col-span-1">
           Price Per Night:
@@ -152,6 +158,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           className={`flex-1 input input-xs sm:input-md text-gray-800 col-span-3 sm:col-span-4 ${
             errors.pricePerNight && "input-bordered input-error border-2"
           }`}
+          defaultValue={initialValues?.pricePerNight}
         />
         <p className="text-xl sm:text-2xl">£</p>
         <label htmlFor="petsAllowed" className="col-span-2 sm:col-span-1">
@@ -161,6 +168,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           id="petsAllowed"
           {...register("petsAllowed", { required: true })}
           className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+          defaultValue={initialValues?.petsAllowed ? "true" : "false"}
         >
           <option value="true">Yes</option>
           <option value="false">No</option>
@@ -172,6 +180,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           id="airconditioned"
           {...register("airconditioned", { required: true })}
           className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+          defaultValue={initialValues?.airconditioned ? "true" : "false"}
         >
           <option value="true">Exists</option>
           <option value="false">Doesn't Exist</option>
@@ -183,6 +192,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           id="breakfast"
           {...register("breakfast", { required: true })}
           className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+          defaultValue={initialValues?.breakfast ? "true" : "false"}
         >
           <option value="true">Exists</option>
           <option value="false">Doesn't Exist</option>
@@ -194,6 +204,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           id="roomCleaning"
           {...register("roomCleaning", { required: true })}
           className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+          defaultValue={initialValues?.roomCleaning ? "true" : "false"}
         >
           <option value="true">Exists</option>
           <option value="false">Doesn't Exist</option>
@@ -205,6 +216,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           id="internet"
           {...register("internet", { required: true })}
           className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+          defaultValue={initialValues?.internet ? "true" : "false"}
         >
           <option value="true">Exists</option>
           <option value="false">Doesn't Exist</option>
@@ -216,6 +228,7 @@ const RoomForm = ({ mutation, router }: Props) => {
           id="category"
           {...register("category", { required: true })}
           className="flex-1 select select-xs sm:select-md select-bordered text-gray-800 col-span-4 sm:col-span-2"
+          defaultValue={initialValues?.category}
         >
           <option value="SINGLE">Single</option>
           <option value="TWINS">Twins</option>
