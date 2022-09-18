@@ -93,6 +93,10 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
     deleteMutation.mutate({ id: room.id });
   };
 
+  const handleEdit = () => {
+    router.push(`/rooms/${room.id}/edit`);
+  };
+
   useEffect(() => {
     if (deleteMutation.isSuccess) {
       router.push("/profile/postings");
@@ -116,11 +120,18 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
             {room.address}
           </p>
           {isCreator && (
-            <ButtonWithLoadingState
-              text="Delete Posting"
-              className="btn-error btn-outline my-4"
-              onClick={handleDeletion}
-            />
+            <section className="flex justify-center gap-4">
+              <ButtonWithLoadingState
+                text="Edit Posting"
+                className="btn-info btn-outline my-4"
+                onClick={handleEdit}
+              />
+              <ButtonWithLoadingState
+                text="Delete Posting"
+                className="btn-error btn-outline my-4"
+                onClick={handleDeletion}
+              />
+            </section>
           )}
           {room?.creator?.name && (
             <p className="my-4 text-accent">
