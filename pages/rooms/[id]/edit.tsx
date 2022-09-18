@@ -2,6 +2,7 @@ import { GetStaticPropsContext } from "next";
 import { useSession } from "next-auth/react";
 import { NextRouter, useRouter } from "next/router";
 import React from "react";
+import { HashLoader } from "react-spinners";
 import Layout from "../../../components/layout/Layout";
 import RoomForm from "../../../components/RoomForm";
 import { trpc } from "../../../utils/trpc";
@@ -22,8 +23,13 @@ const RoomProvider = ({ id, router }: RoomProps) => {
   ]);
   const mutation = trpc.useMutation(["room.post.updateRoom"]);
 
-  if (!room) return <div className="text-white">loading</div>;
-  if (error) return <div className="text-white">error</div>;
+  if (!room)
+    return (
+      <div className="text-white flex justify-center mt-16">
+        <HashLoader color="#ffffff" />
+      </div>
+    );
+  if (error) return <div className="text-white">error: {error.message}</div>;
   return (
     <RoomForm
       id={id}
