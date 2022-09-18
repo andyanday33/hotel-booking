@@ -1,17 +1,17 @@
 import { NextPage } from "next";
-import { trpc } from "../../utils/trpc";
+import { trpc } from "../../../utils/trpc";
 import { useRouter } from "next/router";
-import Layout from "../../components/layout/Layout";
-import ImageWithFallback from "../../components/ImageWithFallback";
+import Layout from "../../../components/layout/Layout";
+import ImageWithFallback from "../../../components/ImageWithFallback";
 import { Room, RoomImage, User } from "@prisma/client";
-import Carousel from "../../components/Carousel";
+import Carousel from "../../../components/Carousel";
 import { DateRange, RangeKeyDict } from "react-date-range";
 
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
-import ButtonWithLoadingState from "../../components/ButtonWithLoadingState";
+import ButtonWithLoadingState from "../../../components/ButtonWithLoadingState";
 import { useSession } from "next-auth/react";
 
 type FeatureProps = {

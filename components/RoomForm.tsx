@@ -30,9 +30,10 @@ type Props = {
   mutation: UseMutationResult<Room, any, any, any>;
   router?: NextRouter;
   initialValues?: Room & { images: ImageType[] };
+  id?: number;
 };
 
-const RoomForm = ({ mutation, router, initialValues }: Props) => {
+const RoomForm = ({ mutation, router, initialValues, id }: Props) => {
   const {
     register,
     handleSubmit,
@@ -52,6 +53,7 @@ const RoomForm = ({ mutation, router, initialValues }: Props) => {
       numOfBeds: +data.numOfBeds,
       guestCapacity: +data.guestCapacity,
       images: [],
+      id,
     };
 
     mutation.mutate(newData);
