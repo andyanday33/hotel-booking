@@ -80,7 +80,7 @@ const ReservationDatePicker: React.FC<ReservationDatePickerProps> = ({
 const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
   const deleteMutation = trpc.useMutation(["room.post.deleteSingleRoom"]);
   const router = useRouter();
-  const { data, status } = useSession();
+  const { data } = useSession();
 
   const [isCreator, setIsCreator] = useState(false);
   useEffect(() => {
